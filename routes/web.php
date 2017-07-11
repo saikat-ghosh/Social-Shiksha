@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +15,8 @@
 Route::get('/', function () {
     return view('index');
 });
-Route::group(['prefix'=>'institution'],function() {
+
+Route::group(['prefix'=>'institution','middleware'=>'isInstitution'],function() {
 
     Route::any('/dashboard', function () {
         return view('institutions.institution_dashboard');
@@ -36,7 +38,7 @@ Route::group(['prefix'=>'institution'],function() {
     });
 });
 
-Route::group(['prefix'=>'teacher'],function() {
+Route::group(['prefix'=>'teacher','middleware'=>'isTeacher'],function() {
 
     Route::any('/dashboard', function () {
         return view('teachers.teacher_dashboard');
@@ -46,7 +48,7 @@ Route::group(['prefix'=>'teacher'],function() {
     });
 });
 
-Route::group(['prefix'=>'student'],function() {
+Route::group(['prefix'=>'student','middleware'=>'isStudent'],function() {
 
     Route::any('/dashboard', function () {
         return view('students.student_dashboard');
@@ -54,4 +56,12 @@ Route::group(['prefix'=>'student'],function() {
     Route::get('/view-profile', function () {
         return view('students.student_view_profile');
     });
+    Route::get('/batch-details', function () {
+        return view('students.student_show_batch_details');
+    });
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
+Route::get('/clear', 'HomeController@truncateDB');

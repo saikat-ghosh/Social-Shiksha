@@ -33,8 +33,15 @@
                 <div style="color: white;
                         padding: 15px 50px 5px 50px;
                         float: right;
-                        font-size: 16px;"><a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a>
+                        font-size: 16px;"><a class="btn btn-danger square-btn-adjust" href="{{ url('/logout') }}"
+                                             onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        <span class="fa fa-power-off"></span>Logout
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                 </div>
+                <!-- Submit this form while logging out -->
             </nav>
 
             <!-- /. NAV TOP  -->
