@@ -16,39 +16,50 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::group(['prefix'=>'institution','middleware'=>'isInstitution'],function() {
+Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],function() {
 
-    Route::any('/dashboard', function () {
-        return view('institutions.institution_dashboard');
-    });
-    Route::get('/view-profile', function () {
-        return view('institutions.institution_view_profile');
-    });
-    Route::get('/batch-details', function () {
-        return view('institutions.institution_show_batch_details');
-    });
-    Route::get('/teacher-details', function () {
-        return view('institutions.institution_show_teacher_details');
-    });
-    Route::get('/student-details', function () {
-        return view('institutions.institution_show_student_details');
-    });
+    Route::get('/dashboard', 'InstitutionController@dashboard');
+
+    Route::get('/view-profile', 'InstitutionController@view-profile');
+
+    Route::post('/view-profile', 'InstitutionController@edit-profile');
+
+    Route::post('/edit-profile', 'InstitutionController@update-profile');
+
+    Route::get('/teacher-details', 'InstitutionController@show_teacher_details');
+
+    Route::get('/student-details', 'InstitutionController@show_student_details');
+
     Route::get('/notice-board', function () {
         return view('institutions.institution_notice_board');
     });
+
+    Route::resource('batch-details','BatchController');
+
+    Route::put('/teacher-details/{id}','InstitutionController@delete_teacher_student_record');
+
+    Route::put('/student-details/{id}','InstitutionController@delete_teacher_student_record');
 });
 
-Route::group(['prefix'=>'teacher','middleware'=>'isTeacher'],function() {
+Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],function() {
 
-    Route::any('/dashboard', function () {
-        return view('teachers.teacher_dashboard');
-    });
-    Route::get('/view-profile', function () {
-        return view('teachers.teacher_view_profile');
-    });
+    Route::get('/dashboard', 'TeacherController@dashboard');
+
+    Route::get('/view-profile', 'TeacherController@view-profile');
+
+    Route::post('/view-profile', 'TeacherController@edit-profile');
+
+    Route::post('/edit-profile', 'TeacherController@update-profile');
+
+    Route::get('/batches','TeacherController@show-batches');
+
+    Route::resource('teachers', 'TeacherController', ['except' => ['create', 'edit']]);
+
+    Route::resource('question-types', 'QuestionTypeController', ['except' => ['create', 'edit']]);
+});
 });
 
-Route::group(['prefix'=>'student','middleware'=>'isStudent'],function() {
+Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function() {
 
     Route::any('/dashboard', function () {
         return view('students.student_dashboard');

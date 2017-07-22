@@ -28,7 +28,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-          echo"homepage";
+        $user = Auth::user();
+
+        if($user->Role_Type == 'C')
+            return redirect('institution/dashboard');
+        elseif($user->Role_Type == 'T')
+            return redirect('teacher/dashboard');
+        else
+            return redirect('student/dashboard');
     }
 
     public function truncateDB()
