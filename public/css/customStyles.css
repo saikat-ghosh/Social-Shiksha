@@ -1,0 +1,245 @@
+/* Custom Added Fonts */
+
+.font-1 {
+    font-family: 'Indie Flower', cursive;
+}
+.font-2 {
+    font-family: 'Source Code Pro', monospace;
+}
+.font-3 {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    color: #111;
+}
+.logo-font {
+    font-size: 30px;
+    color: #fff;
+}
+.large-font {
+    font-size: 40px;
+}
+.medium-font {
+    font-size: 25px;
+}
+.small-font {
+    font-size: 18px;
+}
+.xs-small-font {
+    font-size: 15px;
+}
+
+/* Custom Styles */
+
+.black-border{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.glyphicon-home {
+    font-size: 20px;
+}
+.navbar {
+    padding: 0;
+    margin-bottom: 0;
+    background-color: #2d2d30;
+    border: 0;
+    opacity:0.9;
+    font-size: 11px !important;
+    line-height: 2.42857143 !important;
+    letter-spacing: 4px;
+    border-radius: 0;
+    font-family: Montserrat, sans-serif;
+}
+.navbar li a,.navbar, .navbar-brand {
+    color: #d5d5d5 !important;
+}
+/* On hover, the links will turn white */
+.navbar-nav li a:hover {
+    color: #fff !important;
+    background-color: #2d2d30 !important;
+}
+
+/* The active link */
+.navbar-nav li.active a {
+    color: #fff !important;
+    //background-color:#111 !important;
+}
+.carousel-content {
+/ / padding: 4.5 % 25 %;
+    min-height: 90vh;
+    max-height: 90vh;
+}
+.carousel-caption{
+    //color: black !important;
+}
+.carousel-inner img {
+    -webkit-filter: grayscale(10%);
+    filter: grayscale(10%); /* make all photos black and white */
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+}
+
+.dropdown-menu li a{
+    color: black !important;
+    font-size: 12px;
+}
+.dropdown-menu li a:hover{
+    background-color: #bce8f1 !important;
+    color: black !important;
+}
+.sidebar-header{
+    background-color: #3097D1;
+    color: white;
+    padding: 3%;
+
+}
+.sidebar-list{
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    text-align: left;
+    font-size: 14px;
+}
+.sidebar-list-item{
+    margin: 0;
+    padding: 10px;
+}
+.sidebar-list-item a{
+    display: block;
+    color: #111;
+    text-decoration: none;
+}
+.sidebar-list-item a:hover {
+    font-size: 125%;
+    color: #fff !important;
+    background-color: #737373 !important;
+    text-decoration: none;
+}
+
+.content{
+    background-image: url("../images/background_1.jpg");
+    background-size: cover;
+    min-height: 500px;
+    //padding-top: 2%;
+}
+.thumbnail {
+    padding: 0 0 15px 0;
+    //border: none;
+    border-radius: 0;
+    min-height: 10px;
+    max-height: 200px;
+    //width: 100%;
+    height: auto;
+}
+
+.thumbnail img {
+    max-width: 100%;
+    height: auto;
+    //margin-bottom: 10px;
+}
+.news-feed-img{
+    min-height: 185px;
+    max-height: 185px;
+}
+.news-feed-title{
+    padding-top: 5px;
+    min-height: 45px;
+    max-height: 45px;
+}
+/* Black buttons with extra padding and without rounded borders */
+.btn-theme {
+    top: 210px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+}
+
+/* On hover, the color of .btn will transition to white with black text */
+.btn-theme:hover {
+    border: 1px solid #333;
+    background-color: #fff;
+    color: #000;
+}
+.padding {
+    padding: 3%;
+}
+.padding-bottom {
+    padding-bottom: 1%;
+}
+.no-padding {
+    padding: 0;
+}
+.no-margin-padding{
+    margin: 0;
+    padding: 0;
+}
+
+/* Feedback Form */
+#feedback-form{
+    border: 1px solid darkslateblue;
+    padding: 5%;
+}
+#about-us {
+    padding: 10% 15%;
+    color: #411c0e;
+}
+table,th,td {
+  border: 1px solid black;
+  border-radius: 2px;
+}
+th{
+    background-color: #4CAF50;
+    color: white;
+    padding: 2%;
+    text-align: center;
+    text-justify: auto;
+}
+tr:nth-child(even) {
+    background-color: white !important;
+}
+.modal-header, .modal-close{
+    background-color: #4CAF50;
+    color: #fff;
+}
+.modal-close:hover{
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 125%;
+}
+.white-text{
+    color: white;
+}
+.fixed-size-select-box{
+    width: 100%;
+}
+#or-cr-form{
+    padding: 2%;
+}
+.form {
+    padding: 5%;
+    /*padding-left: 5%;*/
+    background-color: #FFFFFF;
+    height: 55vh;
+    overflow: auto;
+}
+.no-underline-link {
+    text-decoration: none;
+}
+.striped-list{
+    background-color: white;
+}
+.striped-list li:nth-child(odd){
+    background-color: lightgoldenrodyellow;
+}
+.profile-avatar{
+   border-radius: 50%;
+}
+.avatar-container {
+    max-height:250px;
+    max-width:250px;
+    overflow: hidden;
+    margin-bottom: 5%;
+}

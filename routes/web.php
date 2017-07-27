@@ -20,11 +20,11 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
 
     Route::get('/dashboard', 'InstitutionController@dashboard');
 
-    Route::get('/view-profile', 'InstitutionController@view-profile');
+    Route::get('/view-profile', 'InstitutionController@view_profile');
 
-    Route::post('/view-profile', 'InstitutionController@edit-profile');
+    Route::post('/view-profile', 'InstitutionController@edit_profile');
 
-    Route::post('/edit-profile', 'InstitutionController@update-profile');
+    Route::post('/edit-profile', 'InstitutionController@update_profile');
 
     Route::get('/teacher-details', 'InstitutionController@show_teacher_details');
 
@@ -45,18 +45,17 @@ Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],functi
 
     Route::get('/dashboard', 'TeacherController@dashboard');
 
-    Route::get('/view-profile', 'TeacherController@view-profile');
+    Route::get('/view-profile', 'TeacherController@view_profile');
 
-    Route::post('/view-profile', 'TeacherController@edit-profile');
+    Route::post('/view-profile', 'TeacherController@edit_profile');
 
-    Route::post('/edit-profile', 'TeacherController@update-profile');
+    Route::post('/edit-profile', 'TeacherController@update_profile');
 
-    Route::get('/batches','TeacherController@show-batches');
+    Route::get('/batches','TeacherController@show_batches');
 
-    Route::resource('teachers', 'TeacherController', ['except' => ['create', 'edit']]);
+    Route::post('/batches','TeacherController@assign_batch');
 
-    Route::resource('question-types', 'QuestionTypeController', ['except' => ['create', 'edit']]);
-});
+    Route::delete('/batches/{id}','TeacherController@remove_batch');
 });
 
 Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function() {

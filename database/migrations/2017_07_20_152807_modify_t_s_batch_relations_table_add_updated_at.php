@@ -13,7 +13,7 @@ class ModifyTSBatchRelationsTableAddUpdatedAt extends Migration
      */
     public function up()
     {
-        Schema::create('t_s_batch_relations', function (Blueprint $table) {
+        Schema::table('t_s_batch_relations', function (Blueprint $table) {
             $table->timestamp('updated_at');
         });
     }
