@@ -38,7 +38,7 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
     Route::get('/student-details', 'InstitutionController@show_student_details');
 
     Route::get('/notice-board', function () {
-        return view('institutions.institution_notice_board');
+        return view('Institutions.institution_notice_board');
     });
 
     Route::resource('batch-details','BatchController');
@@ -89,3 +89,12 @@ Route::get('/clear', 'HomeController@truncateDB');
 | Add new routes here for new branches
 |------------------------------------------------------------------------------
 */
+
+Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],function(){
+    //Displaying all the topics
+    Route::get('/discussion-forum','DiscussionForumTopicController@index');
+    //Storing the new topics
+    Route::post('/discussion-forum/store','DiscussionForumTopicController@store');
+    Route::get('discussion-forum/{id}','DiscussionForumDetailsController@index');
+
+});

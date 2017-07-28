@@ -1,7 +1,7 @@
 @extends('layouts.institution_layouts.profile_layout')
 
     @section('menu-content')
-
+ 
             <!-- Institution's profile information goes here -->
             <div id="view-profile" class="row padding">
                 <div class="col-sm-11 col-sm-offset-1 no-padding">

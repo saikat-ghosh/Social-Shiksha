@@ -16,7 +16,7 @@ class InstitutionController extends Controller
 
     public function dashboard()
     {
-        return view('institutions.institution_dashboard');
+        return view('Institutions.institution_dashboard');
     }
 
     public function view_profile()
@@ -65,13 +65,13 @@ class InstitutionController extends Controller
     public function show_teacher_details()
     {
         $teachers = TeacherStudentDetail::where([['Ent_Type','<>','D'],['Role_Type','=','T']])->get();
-        return view('institutions.institution_show_teacher_details')->with(['teachers'=>$teachers]);
+        return view('Institutions.institution_show_teacher_details')->with(['teachers'=>$teachers]);
     }
 
     public function show_student_details()
     {
         $students = TeacherStudentDetail::where([['Ent_Type','<>','D'],['Role_Type','=','S']])->get();
-        return view('institutions.institution_show_student_details')->with(['students'=>$students]);
+        return view('Institutions.institution_show_student_details')->with(['students'=>$students]);
     }
 
     public function delete_teacher_student_record($id)

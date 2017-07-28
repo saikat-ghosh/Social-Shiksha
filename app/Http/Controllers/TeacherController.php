@@ -17,7 +17,7 @@ class TeacherController extends Controller
 
     public function dashboard()
     {
-        return view('teachers.teacher_dashboard');
+        return view('Teachers.teacher_dashboard');
     }
 
     public function view_profile()
