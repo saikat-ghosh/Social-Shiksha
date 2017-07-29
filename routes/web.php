@@ -63,20 +63,33 @@ Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],functi
     Route::post('/batches','TeacherController@assign_batch');
 
     Route::delete('/batches/{id}','TeacherController@remove_batch');
+
+    Route::get('upload-student-marks','TeacherController@searchStudentFormForMarksUpload');
+
+    Route::post('upload-student-marks','TeacherController@getStudentForMarksUpload');
+
+    Route::post('upload-student-marks/batch/{batch_id}/student/{id}','TeacherController@showUploadMarksForm');
+
+    Route::post('upload-student-marks/upload','TeacherController@saveUploadedMarks');
 });
 
 Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function() {
 
-    Route::any('/dashboard', function () {
-        return view('students.student_dashboard');
-    });
-    Route::get('/view-profile', function () {
-        return view('students.student_view_profile');
-    });
-    Route::get('/batch-details', function () {
-        return view('students.student_show_batch_details');
-    });
+    Route::get('/dashboard', 'StudentController@dashboard');
+
+    Route::get('/view-profile', 'StudentController@view_profile');
+
+    Route::post('/view-profile', 'StudentController@edit_profile');
+
+    Route::post('/edit-profile', 'StudentController@update_profile');
+
+    Route::get('/batches','StudentController@show_batches');
+
+    Route::post('/batches','StudentController@assign_batch');
+
+    Route::delete('/batches/{id}','StudentController@remove_batch');
 });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
