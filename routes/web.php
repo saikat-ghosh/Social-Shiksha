@@ -48,7 +48,7 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
     Route::put('/student-details/{id}','InstitutionController@delete_teacher_student_record');
 });
 
-Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],function() {
+Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function() {
 
     Route::get('/dashboard', 'TeacherController@dashboard');
 
@@ -90,11 +90,7 @@ Route::get('/clear', 'HomeController@truncateDB');
 |------------------------------------------------------------------------------
 */
 
-Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],function(){
-    //Displaying all the topics
-    Route::get('/discussion-forum','DiscussionForumTopicController@index');
-    //Storing the new topics
-    Route::post('/discussion-forum/store','DiscussionForumTopicController@store');
-    Route::get('discussion-forum/{id}','DiscussionForumDetailsController@index');
+Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function(){
+    Route::resource('discussion-forum','DiscussionForumTopicController');
 
 });

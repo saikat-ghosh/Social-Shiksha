@@ -10,5 +10,4 @@ class DiscussionForumDetails extends Model
 
     protected $fillable = ['DFD_Topic_Id','DFD_Details','DFD_Date','DFD_User_Id','Role_Type','Ent_Type'];
 
-    protected $hidden=['created_at','updated_at'];
 }
