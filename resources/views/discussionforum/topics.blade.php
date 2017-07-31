@@ -30,7 +30,11 @@
                                 @foreach($topics as $id=>$topic)
                                     <div>
                                         <hr>
-                                        <strong>{{$topic->DFT_Topic}}</strong>
+                                        <strong>
+                                        <a href="/teacher/discussion-details/{{ $topic->id }}">
+                                            {{$topic->DFT_Topic}}
+                                        </a>
+                                        </strong>
                                         <span class="badge">{{ $authors[$topic->id] }}</span>
                                         <hr>
                                     </div>

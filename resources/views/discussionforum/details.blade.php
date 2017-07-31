@@ -1,35 +1,34 @@
-@extends('layouts.teacher_layouts.profile_layout')
+@extends('layouts.teacher_layouts.discussion_forum_layout')
 
     @section('menu-content')
- 
-            <!-- Institution's profile information goes here -->
-        <div class="container">
-    		<form method="POST" action="/teacher/discussion-forum/store">
 
-    		{{ csrf_field() }}
-        	<div class="form-group">
-       		<label for="DFT_Topic">Post a Question Here:</label>
-        	<input type="question" class="form-control" name="DFT_Topic" required>
-        	</div>
+           <div id="topics" class="row padding">
+            <div class="col-sm-8 col-sm-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Discuss your queries here</div>
+                    <div class="panel-body">
 
-        	<button type="submit" class="btn btn-primary">Publish Your Question</button>
-        	
-    		</form>
-    	<div>
-               <!-- Retrieving the existing topics in the database -->
-                                @if($topic->isEmpty())
-                                <h4 style="padding: 2%;">No Topic Found</h4>
-                                @else
-                                @foreach($topic as $top)
-                                 <li>
-                                     <a href="/teacher/discussion-forum/{{$top->id}}">{{ $top->DFT_Topic }}</a>
-                                 </li>
-                                 @endforeach
-                                @endif
+                        <div id="post-query" class="row padding">
+                            <!-- form for posting new query -->
+                            <form method="POST" action="/teacher/discussion-details/{{ $id }}">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="DFD_Details">Post Your Question and Answers Here:</label>
+                                    <div>
+                                         <input id="DFD_Details" type="text" class="form-control" name="DFD_Details" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary pull-right">Post Query</button>
+                                </div>
+                            </form>
+                        <div>
+
+                        <div id="view-all-queries" class="row padding">
+                          
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end of content -->
-
+        </div>
     @endsection

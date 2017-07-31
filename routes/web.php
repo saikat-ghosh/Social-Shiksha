@@ -91,6 +91,11 @@ Route::get('/clear', 'HomeController@truncateDB');
 */
 
 Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function(){
+
+    Route::get('discussion-details/{id}','DiscussionForumDetailsController@index');
+
+    Route::post('discussion-details/{id}','DiscussionForumDetailsController@store');
+
     Route::resource('discussion-forum','DiscussionForumTopicController');
 
 });
