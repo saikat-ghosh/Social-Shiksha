@@ -7,6 +7,8 @@ use App\DiscussionForumDetails;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth; 
 use App\TeacherStudentDetail;
+use Illuminate\Support\Facades\DB;
+
 
 class DiscussionForumDetailsController extends Controller
 {
@@ -33,9 +35,15 @@ class DiscussionForumDetailsController extends Controller
         $discussiondetails=DiscussionForumDetails::where([
             ['Ent_Type','<>','D'],
             ['DFD_Topic_Id','=',$id],
-        ])->get();
+        ])->orderBy('DFD_Date','DESC')->get();
+
+        $author=[];
+
+        
 
         return view('discussionforum.details')->with(['discussiondetails'=>$discussiondetails,'id'=>$id]);
+
+
     }
 
     /**

@@ -25,7 +25,20 @@
                         <div>
 
                         <div id="view-all-queries" class="row padding">
-                          
+                            @if($discussiondetails->isEmpty())
+                                <h4>No Queries found!</h4>
+                            @else
+                                @foreach($discussiondetails as $id=>$detail)
+                                    <div>
+                                        <hr>
+                                        <strong>
+                                            {{$detail->DFD_Details}}
+                                        </strong>
+                                        <span class="badge"></span>
+                                        <hr>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
