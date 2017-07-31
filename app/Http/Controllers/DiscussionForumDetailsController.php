@@ -39,9 +39,11 @@ class DiscussionForumDetailsController extends Controller
 
         $author=[];
 
-        
+        foreach($discussiondetails as $detail){
+            $author[$detail->id]=DB::table('teacher_student_details')->where('id',$detail->DFD_User_Id)->value('T_Stu_Name');
+        }
 
-        return view('discussionforum.details')->with(['discussiondetails'=>$discussiondetails,'id'=>$id]);
+        return view('discussionforum.details')->with(['discussiondetails'=>$discussiondetails,'id'=>$id,'author'=>$author]);
 
 
     }

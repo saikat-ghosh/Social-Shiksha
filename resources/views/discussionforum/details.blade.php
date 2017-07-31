@@ -34,7 +34,7 @@
                                         <strong>
                                             {{$detail->DFD_Details}}
                                         </strong>
-                                        <span class="badge"></span>
+                                        <span class="badge">{{ $author[$detail->id] }}</span>
                                         <hr>
                                     </div>
                                 @endforeach
