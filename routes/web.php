@@ -71,6 +71,10 @@ Route::group(['prefix'=>'teacher','middleware'=>[/*'auth','isTeacher'*/]],functi
     Route::post('upload-student-marks/batch/{batch_id}/student/{id}','TeacherController@showUploadMarksForm');
 
     Route::post('upload-student-marks/upload','TeacherController@saveUploadedMarks');
+
+    Route::get('upload-attendance',function () {
+        return view('demo3');
+    });
 });
 
 Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function() {
