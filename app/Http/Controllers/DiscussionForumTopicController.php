@@ -93,6 +93,7 @@ class DiscussionForumTopicController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**
@@ -104,6 +105,10 @@ class DiscussionForumTopicController extends Controller
     public function edit($id)
     {
         //
+        
+        $topic=DiscussionForumTopic::findOrFail($id);
+        
+        return view('discussionforum.edit_topic')->with('topic',$topic);
     }
 
     /**
@@ -115,6 +120,13 @@ class DiscussionForumTopicController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $topic=DiscussionForumTopic::findOrFail($id);
+        $topic->DFT_Topic=$request->DFT_Topic;
+        $topic->Ent_Type='E';
+        if($topic->save())
+            return redirect('/teacher/discussion-forum')->with('message','Updated Successfully');
+        else
+            return back()->with('message','Could not update! Try again later'); 
         //
     }
 
@@ -126,6 +138,12 @@ class DiscussionForumTopicController extends Controller
      */
     public function destroy($id)
     {
+        $topic=DiscussionForumTopic::findOrFail($id);
+        $topic->Ent_Type='D';
+        if ($topic->save())
+                return back()->with('message', 'Deleted Successfully!');
+            else
+                return back()->with('message', 'Could Not Delete Data! Try Again.');            
         //
     }
 }

@@ -35,6 +35,19 @@
                                             {{$detail->DFD_Details}}
                                         </strong>
                                         <span class="badge">{{ $author[$detail->id] }}</span>
+                                        <span class="badge">
+                                            <form action=" {{action('DiscussionForumDetailsController@destroy',$detail->id)}} " method="post">
+                                            {{ csrf_field() }}
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button type="submit" class="btn-xs btn-link white-text">Delete</button>
+                                            </form>
+                                        </span>
+                                        <span class="badge">
+                                            <form action="/teacher/discussion-details/{{$detail->id}}/edit" method="post">
+                                            {{ csrf_field() }}
+                                                <button type="submit" class="btn-xs btn-link white-text">Edit</button>
+                                            </form>
+                                        </span>
                                         <hr>
                                     </div>
                                 @endforeach

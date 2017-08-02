@@ -36,6 +36,20 @@
                                         </a>
                                         </strong>
                                         <span class="badge">{{ $authors[$topic->id] }}</span>
+                                        
+                                        <span class="badge">
+                                            <form action="{{action('DiscussionForumTopicController@destroy',$topic->id)}}" method="post">
+                                            {{ csrf_field() }}
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button type="submit" class="btn-xs btn-link white-text">Delete</button>
+                                            </form>
+                                        </span>
+                                        <span class="badge">
+                                            <form action="{{action('DiscussionForumTopicController@edit',$topic->id)}}" method="get">
+                                            {{ csrf_field() }}
+                                                <button type="submit" class="btn-xs btn-link white-text">Edit</button>
+                                            </form>
+                                        </span>
                                         <hr>
                                     </div>
                                 @endforeach

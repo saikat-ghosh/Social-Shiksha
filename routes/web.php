@@ -96,6 +96,16 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 
     Route::post('discussion-details/{id}','DiscussionForumDetailsController@store');
 
+    Route::post('discussion-details/{id}/edit','DiscussionForumDetailsController@edit');
+
+    Route::post('discussion-details/{id}/update','DiscussionForumDetailsController@update');
+
+    Route::post('discussion-forum/{id}/update','DiscussionForumTopicController@update');
+
     Route::resource('discussion-forum','DiscussionForumTopicController');
+
+    Route::resource('discussion_details','DiscussionForumDetailsController');
+
+    // Route::get('add-notice','NoticeController@store');
 
 });
