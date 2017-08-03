@@ -68,6 +68,8 @@ class DiscussionForumTopicController extends Controller
             'DFT_Topic'=>'required|max:255',
         ]);
 
+        $this->authorize('create',DiscussionForumTopic::class);
+
         $discussionForumTopic = new DiscussionForumTopic;
 
         $discussionForumTopic->DFT_Topic = $request->DFT_Topic;
@@ -80,8 +82,6 @@ class DiscussionForumTopicController extends Controller
             return back()->with('message','Topic Successfully Added!');
         else
             return back()->with('message','Could not add topic. Try again!');
-
-
     }
 
     /**
@@ -93,6 +93,7 @@ class DiscussionForumTopicController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**
@@ -103,7 +104,11 @@ class DiscussionForumTopicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $topic=DiscussionForumTopic::findOrFail($id);
+
+        $this->authorize('view',$topic);
+        
+        return view('discussionforum.edit_topic')->with('topic',$topic);
     }
 
     /**
@@ -115,7 +120,16 @@ class DiscussionForumTopicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $topic = DiscussionForumTopic::findOrFail($id);
+
+        $this->authorize('update',$topic);
+
+        $topic->DFT_Topic = $request->DFT_Topic;
+        $topic->Ent_Type = 'E';
+        if ($topic->save())
+            return redirect('/teacher/discussion-forum')->with('message', 'Post Updated Successfully!');
+        else
+            return back()->with('message', 'Could not update post! Try again later');
     }
 
     /**
@@ -126,6 +140,15 @@ class DiscussionForumTopicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $topic=DiscussionForumTopic::findOrFail($id);
+
+        $this->authorize('delete',$topic);
+
+        $topic->Ent_Type='D';
+        if ($topic->save())
+                return redirect('/teacher/discussion-forum')->with('message', 'Post Deleted!');
+            else
+                return back()->with('message', 'Could Not Delete Post! Try Again.');
+
     }
 }

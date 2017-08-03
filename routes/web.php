@@ -92,10 +92,18 @@ Route::get('/clear', 'HomeController@truncateDB');
 
 Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function(){
 
-    Route::get('discussion-forum/{id}','DiscussionForumDetailsController@index');
+    Route::get('discussion-forum/{id}','DiscussionForumDetailsController@index')->name('post-detail');
 
-    Route::post('discussion-details/{id}','DiscussionForumDetailsController@store');
+    Route::post('discussion-forum/{id}','DiscussionForumDetailsController@store');
+
+    Route::get('discussion-forum/{topic_id}/comment/{comment_id}/edit','DiscussionForumDetailsController@edit');
+
+    Route::put('discussion-forum/{topic_id}/comment/{comment_id}','DiscussionForumDetailsController@update');
+
+    Route::post('discussion-forum/topic/{topic_id}/comment/{id}','DiscussionForumDetailsController@destroy')->name('delete-comment');
 
     Route::resource('discussion-forum','DiscussionForumTopicController');
+
+    // Route::get('add-notice','NoticeController@store');
 
 });

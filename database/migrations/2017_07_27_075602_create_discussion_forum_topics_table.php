@@ -24,10 +24,9 @@ class CreateDiscussionForumTopicsTable extends Migration
             $table->timestamps();
         });
 
-        // Schema::table('discussion_forum_topics', function (Blueprint $table) 
-        // {
-        //     $table->foreign('DFT_User_Id')->references('id')->on('teacher_student_details')->onDelete('set null');
-        // });
+        Schema::table('discussion_forum_topics', function (Blueprint $table) {
+           $table->foreign('DFT_User_Id')->references('id')->on('teacher_student_details')->onDelete('set null');
+        });
     }
 
     /**

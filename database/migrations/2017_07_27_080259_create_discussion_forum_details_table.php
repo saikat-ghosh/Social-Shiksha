@@ -25,11 +25,10 @@ class CreateDiscussionForumDetailsTable extends Migration
             $table->timestamps();
         });
 
-        // Schema::table('discussion_forum_details', function (Blueprint $table) 
-        // {
-        //     $table->foreign('DFD_User_Id')->references('id')->on('teacher_student_details')->onDelete('set null');
-        //     $table->foreign('DFD_Topic_Id')->references('id')->on('discussion_forum_topics')->onDelete('cascade');
-        // });
+         Schema::table('discussion_forum_details', function (Blueprint $table) {
+             $table->foreign('DFD_User_Id')->references('id')->on('teacher_student_details')->onDelete('set null');
+             $table->foreign('DFD_Topic_Id')->references('id')->on('discussion_forum_topics')->onDelete('cascade');
+         });
     }
 
     /**

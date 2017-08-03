@@ -25,7 +25,7 @@ class DiscussionForumDetailsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a post along with comments.
      *
      * @param integer $id
      * @return \Illuminate\Http\Response
@@ -34,18 +34,20 @@ class DiscussionForumDetailsController extends Controller
     {
         $discussionTopic = DiscussionForumTopic::findOrFail($id);
 
-        $discussionDetails=DiscussionForumDetails::where([
-            ['Ent_Type','<>','D'],
-            ['DFD_Topic_Id','=',$id],
-        ])->orderBy('DFD_Date','DESC')->get();
+        $topicAuthor =  DB::table('teacher_student_details')->where('id',$discussionTopic->DFT_User_Id)->value('T_Stu_Name');
 
-        $author=[];
+        $discussionDetails=DiscussionForumDetails::where([
+                                ['Ent_Type','<>','D'],
+                                ['DFD_Topic_Id','=',$id],
+                            ])->orderBy('DFD_Date')->get();
+
+        $commentAuthors=[];
 
         foreach($discussionDetails as $detail){
-            $author[$detail->id]=DB::table('teacher_student_details')->where('id',$detail->DFD_User_Id)->value('T_Stu_Name');
+            $commentAuthors[$detail->id] = DB::table('teacher_student_details')->where('id',$detail->DFD_User_Id)->value('T_Stu_Name');
         }
 
-        return view('discussionforum.topic-details')->with(['discussionTopic'=>$discussionTopic,'discussionDetails'=>$discussionDetails,'id'=>$id,'author'=>$author]);
+        return view('discussionforum.topic_details')->with(['discussionTopic'=>$discussionTopic,'discussionDetails'=>$discussionDetails,'id'=>$id,'topicAuthor'=>$topicAuthor,'commentAuthors'=>$commentAuthors]);
 
 
     }
@@ -75,18 +77,20 @@ class DiscussionForumDetailsController extends Controller
             'DFD_Details'=>'required|max:500',
         ]);
 
-        $discussionDetails=new DiscussionForumDetails;
-        $discussionDetails->DFD_Details=$request->DFD_Details;
-        $discussionDetails->DFD_Date=Carbon::now();
-        $discussionDetails->Role_Type=$author->Role_Type;
-        $discussionDetails->Ent_Type='I';
-        $discussionDetails->DFD_User_Id=$author->id;
-        $discussionDetails->DFD_Topic_Id=$id;
+        $this->authorize('create',DiscussionForumDetails::class);
 
-        if($discussiondDtails->save())
-            return redirect('teachers/discussion-forum/{id}',$id)->with('message','Topic Successfully Added!');
+        $discussionDetails = new DiscussionForumDetails;
+        $discussionDetails->DFD_Details = $request->DFD_Details;
+        $discussionDetails->DFD_Date = Carbon::now();
+        $discussionDetails->Role_Type = $author->Role_Type;
+        $discussionDetails->Ent_Type = 'I';
+        $discussionDetails->DFD_User_Id = $author->id;
+        $discussionDetails->DFD_Topic_Id = $id;
+
+        if($discussionDetails->save())
+            return back()->with('message','Comment successfully posted!!');
         else
-            return back()->with('message','Could not add topic. Try again!');
+            return back()->with('message','Could not post comment. Try again!');
 
 
     }
@@ -105,34 +109,58 @@ class DiscussionForumDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $topic_id
+     * @param  int  $comment_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($topic_id, $comment_id)
     {
-        //
+        $comment= DiscussionForumDetails::findOrFail($comment_id);
+
+        $this->authorize('view',$comment);
+
+        return view('discussionforum.edit_comments')->with(['topic_id'=>$topic_id,'comment'=>$comment]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $topic_id
+     * @param  int $comment_id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $topic_id, $comment_id)
     {
-        //
+        $comment = DiscussionForumDetails::findOrFail($comment_id);
+
+        $this->authorize('update',$comment);
+
+        $comment->DFD_Details = $request->DFD_Details;
+        $comment->Ent_Type='E';
+        if($comment->save())
+            return redirect()->route('post-detail',$topic_id)->with('message','Comment Updated!');
+        else
+            return back()->with('message','Could not update comment! Try again later');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $topic_id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($topic_id,$id)
     {
-        //
+        $comment = DiscussionForumDetails::findOrFail($id);
+
+        $this->authorize('delete',$comment);
+
+        $comment->Ent_Type='D';
+        if ($comment->save())
+                return redirect()->route('post-detail',$topic_id)->with('message', 'Comment Deleted!');
+            else
+                return back()->with('message', 'Could Not Delete Data! Try Again.'); 
     }
 }

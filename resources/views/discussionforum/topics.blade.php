@@ -34,7 +34,9 @@
                                             {{$topic->DFT_Topic}}
                                         </strong>
                                         <span class="badge">{{ $authors[$topic->id] }}</span>
-                                        <a class="xs-small-font pull-right" href={{action('DiscussionForumDetailsController@index',$topic->id)}}><span class="glyphicon glyphicon-comment"></span>Comments</a>
+
+                                        <a class="xs-small-font pull-right" href={{action('DiscussionForumDetailsController@index',$topic->id)}}><span class="glyphicon glyphicon-eye-open"></span>&nbsp;view post</a>
+
                                         <hr>
                                     </div>
                                 @endforeach
