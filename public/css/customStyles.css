@@ -243,3 +243,7 @@ tr:nth-child(even) {
     overflow: hidden;
     margin-bottom: 5%;
 }
+.blue-box-for-posts {
+    border: 1px solid saddlebrown;
+    margin: 2%;
+}

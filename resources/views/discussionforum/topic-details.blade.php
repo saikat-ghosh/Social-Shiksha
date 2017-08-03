@@ -8,8 +8,8 @@
                     <div class="panel-heading">Discuss your queries here</div>
                     <div class="panel-body">
 
-                        <div id="view-post" class="row padding">
-                            <li id="DFD_Topic">{{ $discussionTopic->DFT_Topic }}</li>
+                        <div id="view-post" class="row padding blue-box-for-posts">
+                            <strong>{{ $discussionTopic->DFT_Topic }}</strong>
                         </div>
 
                         <div id="comment-on-post" class="row padding">
@@ -30,7 +30,7 @@
 
                         <div id="view-all-comments" class="row padding">
                             @if($discussionDetails->isEmpty())
-                                <h4>No Queries found!</h4>
+                                <h4>No Comments found!</h4>
                             @else
                                 @foreach($discussionDetails as $id=>$detail)
                                     <div>

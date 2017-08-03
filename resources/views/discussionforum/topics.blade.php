@@ -31,11 +31,10 @@
                                     <div>
                                         <hr>
                                         <strong>
-                                        <a href="/teacher/discussion-details/{{ $topic->id }}">
                                             {{$topic->DFT_Topic}}
-                                        </a>
                                         </strong>
                                         <span class="badge">{{ $authors[$topic->id] }}</span>
+                                        <a class="xs-small-font pull-right" href={{action('DiscussionForumDetailsController@index',$topic->id)}}><span class="glyphicon glyphicon-comment"></span>Comments</a>
                                         <hr>
                                     </div>
                                 @endforeach
