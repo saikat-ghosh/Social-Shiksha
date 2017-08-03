@@ -8,27 +8,31 @@
                     <div class="panel-heading">Discuss your queries here</div>
                     <div class="panel-body">
 
-                        <div id="post-query" class="row padding">
+                        <div id="view-post" class="row padding">
+                            <li id="DFD_Topic">{{ $discussionTopic->DFT_Topic }}</li>
+                        </div>
+
+                        <div id="comment-on-post" class="row padding">
                             <!-- form for posting new query -->
                             <form method="POST" action="/teacher/discussion-details/{{ $id }}">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="DFD_Details">Post Your Question and Answers Here:</label>
+                                    <label for="DFD_Details">Leave Your Comments below :</label>
                                     <div>
                                          <input id="DFD_Details" type="text" class="form-control" name="DFD_Details" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary pull-right">Post Query</button>
+                                    <button type="submit" class="btn btn-primary pull-right">Post</button>
                                 </div>
                             </form>
                         <div>
 
-                        <div id="view-all-queries" class="row padding">
-                            @if($discussiondetails->isEmpty())
+                        <div id="view-all-comments" class="row padding">
+                            @if($discussionDetails->isEmpty())
                                 <h4>No Queries found!</h4>
                             @else
-                                @foreach($discussiondetails as $id=>$detail)
+                                @foreach($discussionDetails as $id=>$detail)
                                     <div>
                                         <hr>
                                         <strong>
