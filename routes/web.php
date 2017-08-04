@@ -104,6 +104,9 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 
     Route::resource('discussion-forum','DiscussionForumTopicController');
 
-    // Route::get('add-notice','NoticeController@store');
+    Route::get('add-notice','NoticeBoardController@create');
 
+    Route::get('check-notice','NoticeBoardController@index');
+
+    Route::get('check-notice/edit/{id}','NoticeBoardController@edit');
 });
