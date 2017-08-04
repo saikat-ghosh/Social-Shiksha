@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TeacherStudentDetail;
+use Illuminate\Support\Facades\Auth; 
+use App\NoticeBoardDetails;
+use Carbon\Carbon;
 
 class NoticeBoardController extends Controller
 {
@@ -11,9 +15,21 @@ class NoticeBoardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $user;
+
+    public function getCurrentAuthor()
+    {
+        $this->user = Auth::user();
+
+        $author = TeacherStudentDetail::where([['T_Stu_Email',$this->user->email]])->first();
+
+        return $author;
+    }
+
     public function index()
     {
         //show all the notices
+        
         return view('teachers.notice-board.view_notice_board');
     }
 
@@ -36,6 +52,22 @@ class NoticeBoardController extends Controller
     public function store(Request $request)
     {
         //store notice & redirect to notice-board page
+        $author = $this->getCurrentAuthor();
+
+        $noticeBoard=new NoticeBoardDetails;
+
+        $noticeBoard->NB_Heading=$request->NB_Heading;
+        $noticeBoard->NB_Content=$request->NB_Content;
+        $noticeBoard->NB_Date=Carbon::now();
+        $noticeBoard->NB_Inst_Id=null;
+        $noticeBoard->Ent_Type='I';
+        $noticeBoard->Role_Type='E';
+        $noticeBoard->NB_T_Id=$author->id;
+
+        if($noticeBoard->save())
+            return back()->with('message','Notice Successfully Added!');
+        else
+            return back()->with('message','Could not add topic. Try again!');
     }
 
     /**

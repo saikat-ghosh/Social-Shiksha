@@ -109,4 +109,6 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
     Route::get('check-notice','NoticeBoardController@index');
 
     Route::get('check-notice/edit/{id}','NoticeBoardController@edit');
+
+    Route::post('/add-notice','NoticeBoardController@store');
 });
