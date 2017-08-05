@@ -27,6 +27,33 @@ class NoticeBoardController extends Controller
         return $author;
     }
 
+    public function studentIndex()
+    {
+        $this->user=Auth::user();
+
+        $notices=NoticeBoardDetails::where([
+            ['Ent_Type','<>','D']
+        ])->orderBy('NB_Date')->get();
+
+        $count=NoticeBoardDetails::where([
+            ['Ent_Type','<>','D']
+        ])->count();
+
+        if($count==0)
+            return redirect('/student/dashboard')->with('message','No notice to be displayed');
+        else
+        {
+            $author=[];
+
+            foreach ($notices as $notice) 
+            {
+                $author[$notice->id]=DB::table('teacher_student_details')->where('id',$notice->NB_T_Id)->value('T_Stu_Name');
+            }
+
+            return view('teachers.notice-board.view_notice_board')->with(['author'=>$author,'notices'=>$notices]);
+        }
+    }
+
     public function index()
     {
         //show all the notices

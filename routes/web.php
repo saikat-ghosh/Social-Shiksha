@@ -68,7 +68,7 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function() {
 
     Route::any('/dashboard', function () {
-        return view('students.student_dashboard');
+        return view('Students.student_dashboard');
     });
     Route::get('/view-profile', function () {
         return view('students.student_view_profile');
@@ -117,4 +117,8 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
     Route::put('/add-notice/edit/{id}','NoticeBoardController@update');
 
     Route::delete('/delete/{id}','NoticeBoardController@destroy');
+});
+
+Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function(){
+    Route::get('view-notice','NoticeBoardController@studentIndex');
 });
