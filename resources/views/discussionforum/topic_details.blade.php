@@ -12,6 +12,7 @@
                     <div class="panel-body">
 
                         <div>
+                        
                             <span class="badge"> {{ $topicAuthor }}</span>
                             @can('view',$discussionTopic)
                                 <a class="xs-small-font pull-right" onclick="event.preventDefault();$('#confirm-topic-delete').modal('show')" data-toggle="modal"><span class="glyphicon glyphicon-trash"></span>&nbsp;delete&nbsp;</a>&nbsp;

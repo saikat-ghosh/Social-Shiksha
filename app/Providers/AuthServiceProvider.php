@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\DiscussionForumDetails;
+use App\Policies\NoticeBoardDetailsPolicy;
 use App\DiscussionForumTopic;
+use App\NoticeBoardDetails;
 use App\Policies\TopicDetailsPolicy;
 use App\Policies\TopicPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -16,9 +18,11 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
+    protected $policies = 
+    [
         DiscussionForumTopic::class => TopicPolicy::class,
-        DiscussionForumDetails::class => TopicDetailsPolicy::class
+        DiscussionForumDetails::class => TopicDetailsPolicy::class,
+        NoticeBoardDetails::class=> NoticeBoardDetailsPolicy::class
     ];
 
     /**

@@ -57,17 +57,102 @@
 
     @section('menu-content')
             <!-- Form for adding new notice goes here -->
-            <div id="add-notice" class="row padding">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Notice Board</div>
-                        <div class="panel-body">
-                            <h2>Display the list of notices here</h2>
-                            <hr>
-                            Follow <strong>Topic_details.blade.php</strong>; Give 'EDIT' and 'DELETE' options to Notice Author only.
-                        </div>
+        <div id="topics" class="row padding">
+            <div class="col-sm-8 col-sm-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Notice Board
+                            <a class="pull-right" href="/teacher/dashboard"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Back to forum</a>
+
+                    </div>
+                    <div class="panel-body">
+                        @foreach($notices as $notice)
+                            <div><span class="badge">{{ $author[$notice->id]}}</span>
+                            <p> {{ $notice->NB_Content }} </p>
+                            </div>
+                            @can('view',$notice)
+                             <a class="xs-small-font pull-right" onclick="event.preventDefault();$('#confirm-topic-delete').modal('show')" data-toggle="modal"><span class="glyphicon glyphicon-trash"></span>&nbsp;delete&nbsp;</a>&nbsp;
+                            <a class="xs-small-font pull-right" href="add-notice/edit/{{$notice->id}}"><span class="glyphicon glyphicon-edit"></span>&nbsp;edit&nbsp;</a>
+                            @endcan
+                        @endforeach
                     </div>
                 </div>
             </div>
+        </div>
 
     @endsection
+     <!-- Modal for confirming whether to Delete Topic -->
+        <div id="confirm-topic-delete" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="modal-close btn pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                        <center>
+                            <h4><span class="glyphicon glyphicon-info-sign"></span>&thinsp; Message</h4>
+                        </center>
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            <p><strong>Sure you want to delete this post?</strong></p>
+                            <form id="topic-delete" action="/teacher/delete/{{ $notice->id }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                                <button onclick="$('#topic-delete').submit();" class="btn btn-danger" data-dismiss="modal">Yes &thinsp;
+                                    <span class="small-font glyphicon glyphicon-trash"></span>
+                                </button>
+                                <button class="btn btn-success" data-dismiss="modal">No &thinsp;
+                                    <span class="small-font glyphicon glyphicon-remove-circle"></span>
+                                </button>
+
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for confirming whether to Delete Comment -->
+        <div id="confirm-comment-delete" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <button type="button" class="modal-close btn pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                        <center>
+                            <h4><span class="glyphicon glyphicon-info-sign"></span>&thinsp; Message</h4>
+                        </center>
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            <p>Sure you want to delete this comment?</p>
+                            <form id="delete" action="" method="post">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-danger">Yes &thinsp;
+                                    <span class="small-font glyphicon glyphicon-trash"></span>
+                                </button>
+                                <button class="btn btn-success" data-dismiss="modal">No &thinsp;
+                                    <span class="small-font glyphicon glyphicon-remove-circle"></span>
+                                </button>
+                            </form>
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @push('js')
+            <script language="JavaScript">
+                $(document).ready(function() {
+                    $('.comment-delete').on('click', function () {
+                        console.log($(this).data('delete-link'));
+                        $('#delete').attr('action', $(this).data('delete-link'));
+                    });
+                });
+            </script>
+        @endpush

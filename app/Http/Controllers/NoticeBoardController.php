@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\TeacherStudentDetail;
 use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\DB;
 use App\NoticeBoardDetails;
 use Carbon\Carbon;
 
@@ -29,8 +30,27 @@ class NoticeBoardController extends Controller
     public function index()
     {
         //show all the notices
-        
-        return view('teachers.notice-board.view_notice_board');
+        $this->user=Auth::user();
+
+        $notices=NoticeBoardDetails::where([
+            ['Ent_Type','<>','D']
+        ])->orderBy('NB_Date')->get();
+
+        $count=NoticeBoardDetails::where([
+            ['Ent_Type','<>','D']
+        ])->count();
+
+        if($count==0)
+            return redirect('/teacher/add-notice')->with('message','No notice to be displayed');
+
+        $author=[];
+
+        foreach ($notices as $notice) {
+            # code...
+            $author[$notice->id]=DB::table('teacher_student_details')->where('id',$notice->NB_T_Id)->value('T_Stu_Name');
+        }
+
+        return view('teachers.notice-board.view_notice_board')->with(['author'=>$author,'notices'=>$notices]);
     }
 
     /**
@@ -54,6 +74,14 @@ class NoticeBoardController extends Controller
         //store notice & redirect to notice-board page
         $author = $this->getCurrentAuthor();
 
+        $this->validate(request(),[
+            'NB_Heading'=>'required|max:250',
+            'NB_Content'=>'required|max:500',
+             
+        ]);
+
+        $this->authorize('create',NoticeBoardDetails::class);
+
         $noticeBoard=new NoticeBoardDetails;
 
         $noticeBoard->NB_Heading=$request->NB_Heading;
@@ -61,7 +89,7 @@ class NoticeBoardController extends Controller
         $noticeBoard->NB_Date=Carbon::now();
         $noticeBoard->NB_Inst_Id=null;
         $noticeBoard->Ent_Type='I';
-        $noticeBoard->Role_Type='E';
+        $noticeBoard->Role_Type=$author->Role_Type;
         $noticeBoard->NB_T_Id=$author->id;
 
         if($noticeBoard->save())
@@ -89,8 +117,11 @@ class NoticeBoardController extends Controller
      */
     public function edit($id)
     {
-        //$notice = find notice
-        return view('teachers.notice-board.edit_notice');
+        $notice = NoticeBoardDetails::findOrFail($id);
+
+        $this->authorize('view',$notice);
+
+        return view('teachers.notice-board.edit_notice')->with(['notice'=>$notice]);
     }
 
     /**
@@ -103,6 +134,18 @@ class NoticeBoardController extends Controller
     public function update(Request $request, $id)
     {
         //update notice & redirect to notice-board
+        $notice=NoticeBoardDetails::findOrFail($id);
+
+        $this->authorize('update',$notice);
+
+        $notice->NB_Content=$request->NB_Content;
+        $notice->NB_Heading=$request->NB_Heading;
+        $notice->Ent_Type='E';
+
+        if($notice->save())
+            return redirect('/teacher/check-notice')->with('message','Updated Successfully !');
+        else
+            return back()->with('message','Could not be updated.Try again');
     }
 
     /**
@@ -114,5 +157,14 @@ class NoticeBoardController extends Controller
     public function destroy($id)
     {
         //change Ent_Type = 'D' of the particular notice
+        $notice=NoticeBoardDetails::findOrFail($id);
+        $this->authorize('delete',$notice);
+
+        $notice->Ent_Type='D';
+
+        if($notice->save())
+            return redirect('/teacher/check-notice')->with('message','Deleted Successfully');
+        else
+            return redirect('/teacher/check-notice')->with('message','Could not deleted! Try again');
     }
 }

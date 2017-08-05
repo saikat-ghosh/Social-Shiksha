@@ -111,4 +111,10 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
     Route::get('check-notice/edit/{id}','NoticeBoardController@edit');
 
     Route::post('/add-notice','NoticeBoardController@store');
+
+    Route::get('/add-notice/edit/{id}','NoticeBoardController@edit');
+
+    Route::put('/add-notice/edit/{id}','NoticeBoardController@update');
+
+    Route::delete('/delete/{id}','NoticeBoardController@destroy');
 });

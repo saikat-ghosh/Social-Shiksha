@@ -68,14 +68,14 @@
                             <div class="form-group">
                                 <label for="Notice_Heading" class="col-md-5 control-label">Notice Heading :</label>
                                 <div class="col-md-6">
-                                    <input id="Notice_Heading" class="form-control" type="text" name ="NB_Heading">
+                                    <input id="Notice_Heading" class="form-control" type="text" name ="NB_Heading" value="{{ $notice->NB_Heading }}">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="Notice_Body" class="col-md-5 control-label">Notice Body :</label>
                                 <div class="col-md-6">
-                                    <textarea id="Notice_Body" class="form-control" name ="NB_Content" rows="4" cols="7"></textarea>
+                                    <textarea id="Notice_Body" class="form-control" name ="NB_Content" rows="4" cols="7">{{ $notice->NB_Content }}</textarea>
                                 </div>
                             </div>
 
