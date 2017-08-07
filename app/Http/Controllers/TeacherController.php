@@ -288,7 +288,7 @@ class TeacherController extends Controller
                 if(!$hasAttendance)
                     $students[$id] = TeacherStudentDetail::findOrFail($id);
             }
-            //dd($students);
+
         }catch( ModelNotFoundException $e) {
             return back()->with('message', 'No Such Student/Batch Exists!');
         }
