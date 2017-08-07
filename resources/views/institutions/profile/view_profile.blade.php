@@ -1,4 +1,4 @@
-@extends('layouts.institution_layouts.profile_layout')
+@extends('layouts.institution_layouts.institution_profile_layout')
 
     @section('menu-content')
  
@@ -12,10 +12,10 @@
 
                             <div class="col-sm-4">
                                 <!-- Displays Profile Picture -->
-                                @if(is_null($institute->Inst_File_Name) || !(file_exists(public_path('uploads\avatars\institution\\'.$institute->Inst_File_Name))))
+                                @if(is_null($institute->Inst_File_Name) || !(file_exists(storage_path('app\public\uploads\avatars\institutions\\'.$institute->Inst_File_Name))))
                                     <img class="img-responsive profile-avatar pull-right" alt="no-pic" src={{asset('images\no-profile-pic.png')}}>
                                 @else
-                                    <img class="img-responsive profile-avatar pull-right" alt="pic" src={{asset('uploads\avatars\institution\\'.$institute->Inst_File_Name)}}>
+                                    <img class="img-responsive profile-avatar pull-right" alt="pic" src={{asset('storage\uploads\avatars\institutions\\'.$institute->Inst_File_Name)}}>
                                 @endif
                             </div>
 
@@ -85,10 +85,6 @@
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-4">
                                         <button type="submit" class="btn btn-primary pull-right">Edit Profile </button>
-
-                                        <a class="btn btn-link" href="{{ action('InstitutionController@view_profile') }}">
-                                            Cancel
-                                        </a>
                                     </div>
                                 </div>
                             </form>

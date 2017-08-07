@@ -49,9 +49,16 @@ class InstitutionController extends Controller
         {
             $oldFileName = $fileName;
             $avatar = $request->file('profile-avatar');
-            $fileName = time().'.'.$avatar->getClientOriginalExtension();
-            if(Image::make($avatar)->resize(200,200)->save(public_path('uploads\avatars\institution\\'.$fileName)))
-                File::delete(public_path('uploads\avatars\institution\\'.$oldFileName));
+            $fileName = $institute->id.time().'.'.$avatar->getClientOriginalExtension();
+
+            // check or create directory for photo upload
+            $path = storage_path('app\public\uploads\avatars\institutions');
+
+            if(!File::exists($path))
+                File::makeDirectory($path,777,true);
+
+            if(Image::make($avatar)->resize(200,200)->save($path.'\\'.$fileName))
+                File::delete($path.'\\'.$oldFileName);
         }
 
         $institute->fill($request->all());

@@ -56,7 +56,6 @@
     @endsection
 
     @section('menu-content')
-
             <!-- Batch Details for the particular teacher goes here -->
             <div id="view-batches" class="row padding">
                 <div class="col-sm-8 col-sm-offset-2">
@@ -73,10 +72,10 @@
                                                 <strong>{{ $batch->Batch_Code }}</strong>&nbsp;&nbsp;
                                                 {{ $batch->Batch_Subject }}
                                                 <span class="badge">
-                                                    <form action="{{ action('TeacherController@remove_batch',$id) }}" method="post">
+                                                    <form action="{{ action('TeacherController@removeBatch',$id) }}" method="post">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="_method" value="delete">
-                                                        <button type="submit" class="btn-xs btn-link white-text">Delete</button>
+                                                            <button type="submit" class="btn-xs btn-link white-text">Delete</button>
                                                     </form>
                                                 </span>
                                             </li>
@@ -91,5 +90,4 @@
                     </div>
                 </div>
             </div>
-
     @endsection
