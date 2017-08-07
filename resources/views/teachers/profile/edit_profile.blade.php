@@ -25,7 +25,7 @@
                     </div>
 
                     <!-- Displays Profile Information -->
-                    <form class="form-horizontal col-sm-8" enctype="multipart/form-data" role="form" action="{{ action('TeacherController@update_profile') }}" method="POST">
+                    <form class="form-horizontal col-sm-8" enctype="multipart/form-data" role="form" action="{{ action('TeacherController@updateProfile') }}" method="POST">
                                 {{ csrf_field() }}
 
                                 <div class="form-group{{ $errors->has('T_Stu_Name') ? ' has-error' : '' }}">
@@ -46,7 +46,7 @@
                                     <label for="email" class="col-md-5 control-label">Email *</label>
 
                                     <div class="col-md-6">
-                                        <input id="email" type="text" class="form-control" name="T_Stu_Email" value="{{ $teacher->T_Stu_Email }}" required>
+                                        <input id="email" type="text" class="form-control" name="T_Stu_Email" value="{{ $teacher->T_Stu_Email }}" readonly>
 
                                         @if ($errors->has('T_Stu_Email'))
                                             <span class="help-block">
@@ -88,7 +88,7 @@
                                     <label for="username" class="col-md-5 control-label">Username *</label>
 
                                     <div class="col-md-6">
-                                        <input id="username" type="text" class="form-control" name="T_Stu_User_Id" value="{{ $teacher->T_Stu_User_Id }}" required>
+                                        <input id="username" type="text" class="form-control" name="T_Stu_User_Id" value="{{ $teacher->T_Stu_User_Id }}" readonly>
 
                                         @if ($errors->has('T_Stu_User_Id'))
                                             <span class="help-block">
@@ -101,10 +101,10 @@
                                 <input id="upload" type="file" name="profile-avatar"/>
 
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                    <div class="col-md-8 col-md-offset-3">
                                         <button type="submit" class="btn btn-info pull-right">Update</button>
 
-                                        <a class="btn btn-link" href="{{ action('TeacherController@view_profile') }}">Cancel</a>
+                                        <a class="btn btn-link" href="{{ action('TeacherController@viewProfile') }}">Cancel</a>
                                     </div>
                                 </div>
                             </form>

@@ -19,7 +19,7 @@
                                 @endif
                             </div>
 
-                            <form class="form-horizontal col-sm-8" role="form" action="{{ action('TeacherController@edit_profile') }}" method="POST">
+                            <form class="form-horizontal col-sm-8" role="form" action="{{ action('TeacherController@editProfile') }}" method="GET">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                    <div class="col-md-8 col-md-offset-3">
                                         <button type="submit" class="btn btn-primary pull-right">Edit Profile </button>
                                     </div>
                                 </div>

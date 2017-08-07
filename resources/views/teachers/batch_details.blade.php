@@ -56,39 +56,38 @@
     @endsection
 
     @section('menu-content')
-
-
-    @endsection<!-- Batch Details for the particular teacher goes here -->
-<div id="view-batches" class="row padding">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">Batches you are currently associated with</div>
-            <div class="panel-body">
-                <div>
-                    @if(empty($teacherBatches))
-                        <h4>You are not currently associated with any batches.</h4>
-                    @else
-                        <ul class="list-group striped-list">
-                            @foreach($teacherBatches as $id=>$batch)
-                                <li class="list-group-item">
-                                    <strong>{{ $batch->Batch_Code }}</strong>&nbsp;&nbsp;
-                                    {{ $batch->Batch_Subject }}
-                                    <span class="badge">
-                                                    <form action="{{ action('TeacherController@remove_batch',$id) }}" method="post">
+            <!-- Batch Details for the particular teacher goes here -->
+            <div id="view-batches" class="row padding">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Batches you are currently associated with</div>
+                        <div class="panel-body">
+                            <div>
+                                @if(empty($teacherBatches))
+                                    <h4>You are not currently associated with any batches.</h4>
+                                @else
+                                    <ul class="list-group striped-list">
+                                        @foreach($teacherBatches as $id=>$batch)
+                                            <li class="list-group-item">
+                                                <strong>{{ $batch->Batch_Code }}</strong>&nbsp;&nbsp;
+                                                {{ $batch->Batch_Subject }}
+                                                <span class="badge">
+                                                    <form action="{{ action('TeacherController@removeBatch',$id) }}" method="post">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="_method" value="delete">
-                                                        <button type="submit" class="btn-xs btn-link white-text">Delete</button>
+                                                            <button type="submit" class="btn-xs btn-link white-text">Delete</button>
                                                     </form>
                                                 </span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-                <div>
-                    <a href="{{ action('BatchController@create') }}" class="btn btn-info pull-right xs-small-font"><span class="xs-small-font glyphicon glyphicon-plus-sign"></span>&thinsp;Join Batch</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                            <div>
+                                <a href="{{ action('BatchController@create') }}" class="btn btn-info pull-right xs-small-font"><span class="xs-small-font glyphicon glyphicon-plus-sign"></span>&thinsp;Join Batch</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+    @endsection

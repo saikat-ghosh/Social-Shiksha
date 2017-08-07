@@ -67,37 +67,3 @@
 
     @endsection
 
-    @push('js')
-
-        <!-- Populate Student's Name from selected Batch -->
-            <script>
-                $(document).ready(function($){
-
-                    $('#Batch_id').change(function(){
-
-                        $.get("{{ url('teacher/upload-student-marks/get-students-by-batch')}}", { id: $(this).val() },
-
-                                function(data) {
-
-                                    var student_names = $('#User_id');
-
-                                    student_names.empty();
-
-                                    $.each(data, function(key, value) {
-
-                                        student_names
-
-                                                .append($("<option></option>")
-
-                                                        .attr("value",key)
-
-                                                        .text(value));
-                                    });
-
-                                });
-
-                    });
-
-                });
-            </script>
-    @endpush
