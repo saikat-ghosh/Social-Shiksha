@@ -63,7 +63,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Add Notice</div>
                         <div class="panel-body">
-                            <form class="form-horizontal" role="form" action="/teacher/add-notice"  method="POST">
+                            <form class="form-horizontal" role="form" action="{{action('NoticeBoardController@store')}}"  method="POST">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">

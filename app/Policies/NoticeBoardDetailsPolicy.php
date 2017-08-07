@@ -15,15 +15,12 @@ class NoticeBoardDetailsPolicy
      * Determine whether the user can view the NoticeBoardDetails.
      *
      * @param  \App\User  $user
-     * @param  \App\NoticeBoardDetails  $NoticeBoardDetails
+     * @param  \App\NoticeBoardDetails  $noticeBoardDetails
      * @return mixed
      */
     public function view(User $user, NoticeBoardDetails $noticeBoardDetails)
     {
         //
-        $author = TeacherStudentDetail::where('T_Stu_Email',$user->email)->first();
-
-        return $noticeBoardDetails->NB_T_Id==$author->id;
     }
 
     /**
@@ -34,8 +31,8 @@ class NoticeBoardDetailsPolicy
      */
     public function create(User $user)
     {
-        //
-        return $user->Role_Type != 'S';
+        //Only Teacher can add notices
+        return $user->Role_Type == 'T';
     }
 
     /**
@@ -47,10 +44,10 @@ class NoticeBoardDetailsPolicy
      */
     public function update(User $user, NoticeBoardDetails $noticeBoardDetails)
     {
-        //
+        //only Author of the Notice can edit
         $author = TeacherStudentDetail::where('T_Stu_Email',$user->email)->first();
 
-        return $noticeBoardDetails->NB_T_Id==$author->id;
+        return $noticeBoardDetails->NB_T_Id == $author->id;
     }
 
     /**
@@ -62,9 +59,9 @@ class NoticeBoardDetailsPolicy
      */
     public function delete(User $user, NoticeBoardDetails $noticeBoardDetails)
     {
-        //
+        //only Author of the Notice can delete
         $author = TeacherStudentDetail::where('T_Stu_Email',$user->email)->first();
         
-        return $noticeBoardDetails->NB_T_Id==$author->id;
+        return $noticeBoardDetails->NB_T_Id == $author->id;
     }
 }

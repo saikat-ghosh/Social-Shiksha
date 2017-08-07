@@ -62,7 +62,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Edit Notice</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" action="" method="POST">
+                        <form class="form-horizontal" role="form" action="{{ action('NoticeBoardController@update',$notice->id) }}" method="POST">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
                             <div class="form-group">

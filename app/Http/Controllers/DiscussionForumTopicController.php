@@ -33,7 +33,7 @@ class DiscussionForumTopicController extends Controller
     public function index()
     {
         $topics = DiscussionForumTopic::where('Ent_Type','<>','D')->orderBy('DFT_Date','DESC')->get();
-
+dd($topics);
         $authors = [];
 
         foreach($topics as $id=>$topic)

@@ -37,9 +37,7 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
 
     Route::get('/student-details', 'InstitutionController@show_student_details');
 
-    Route::get('/notice-board', function () {
-        return view('Institutions.institution_notice_board');
-    });
+    Route::get('/notice-board', 'InstitutionController@showNoticeBoard');
 
     Route::resource('batch-details','BatchController');
 
@@ -106,19 +104,14 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 
     Route::get('add-notice','NoticeBoardController@create');
 
+    Route::post('add-notice','NoticeBoardController@store');
+
     Route::get('check-notice','NoticeBoardController@index');
 
-    Route::get('check-notice/edit/{id}','NoticeBoardController@edit');
+    Route::get('check-notice/{id}/edit','NoticeBoardController@edit');
 
-    Route::post('/add-notice','NoticeBoardController@store');
+    Route::put('check-notice/{id}','NoticeBoardController@update');
 
-    Route::get('/add-notice/edit/{id}','NoticeBoardController@edit');
-
-    Route::put('/add-notice/edit/{id}','NoticeBoardController@update');
-
-    Route::delete('/delete/{id}','NoticeBoardController@destroy');
+    Route::delete('check-notice/{id}','NoticeBoardController@destroy');
 });
 
-Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function(){
-    Route::get('view-notice','NoticeBoardController@studentIndex');
-});

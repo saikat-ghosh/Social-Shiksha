@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\CoachingDetails;
+use App\NoticeBoardDetails;
 use App\TeacherStudentDetail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
@@ -88,5 +90,18 @@ class InstitutionController extends Controller
         } catch( ModelNotFoundException $e) {
             return back()->with('message', 'No Such User Exists!');
         }
+    }
+
+    public function showNoticeBoard()
+    {
+        $notices = NoticeBoardDetails::where('Ent_Type','<>','D')->orderBy('NB_Date','DESC')->get();
+
+        $authors = [];
+        foreach ($notices as $notice)
+        {
+            $authors[$notice->id]= DB::table('teacher_student_details')->where('id',$notice->NB_T_Id)->value('T_Stu_Name');
+        }
+
+        return view('Institutions.institution_notice_board')->with(['authors'=>$authors,'notices'=>$notices]);;
     }
 }

@@ -27,15 +27,32 @@
     @endsection
 
     @section('menu-content')
-            <!-- Institution notice-board goes here -->
-            <h2><b>Notices</b></h2>
-             
-            <!--table class="table table-responsive table-striped table-bordered">
-                   <tr>
-                       <th>Sl. no.</th>
-                       <th>Notice </th>
+        <!-- Institution notice-board goes here -->
+            <div id="check-notice" class="row padding">
+                <div class="col-sm-8 col-sm-offset-1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Notice Board</div>
+                        <div class="panel-body">
+                            @if($notices->isEmpty())
+                                <h4>No notices to display.</h4>
+                            @else
+                                @foreach($notices as $notice)
+                                    <div>
+                                        <!-- Notice Heading -->
+                                        <strong>{{ $notice->NB_Heading }}</strong>
+                                        <!-- Author's name -->
+                                        <span class="badge">{{ $authors[$notice->id]}}</span>
+                                    </div>
+                                    <!-- Notice body -->
+                                    <div>
+                                        <p> {{ $notice->NB_Content }} </p>
+                                    </div>
+                                    <hr>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                       <th>Date</th>
-                   </tr>
-            </table-->
     @endsection
