@@ -101,7 +101,7 @@
                                 <input id="upload" type="file" name="profile-avatar"/>
 
                                 <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                    <div class="col-md-8 col-md-offset-3">
                                         <button type="submit" class="btn btn-info pull-right">Update</button>
 
                                         <a class="btn btn-link" href="{{ action('StudentController@view_profile') }}">Cancel</a>

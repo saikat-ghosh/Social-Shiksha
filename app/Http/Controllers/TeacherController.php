@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\AssignmentsTeacherUpload;
 use App\AttendanceDetails;
 use App\BatchDetail;
+use App\ExamQuestionDetails;
+use App\ExamResponseDetails;
+use App\ExamUploadDetails;
 use App\MockTestDetails;
 use App\PerformanceDetails;
 use App\StudyMaterialDetails;
@@ -34,6 +37,27 @@ class TeacherController extends Controller
         $this->user = Auth::user();
         $teacher = TeacherStudentDetail::where('T_Stu_Email',$this->user->email)->first();
         return $teacher;
+    }
+
+    /*
+    |------------------------------------------------------------------------------
+    | Method to retrieve all batches the teacher currently associated with
+    |------------------------------------------------------------------------------
+    */
+    public function getAssociatedBatches()
+    {
+        $teacher = $this->getCurrentTeacher();
+
+        $batch_ids = DB::table('t_s_batch_relations')->where([['TSB_T_Stu_Id', $teacher->id],['Ent_Type','<>','D']])->pluck('TSB_Batch_Id');
+
+        $batches = [];
+
+        foreach($batch_ids as $index=>$id)
+        {
+            $batches[$id] = BatchDetail::findOrFail($id);
+        }
+
+        return $batches;
     }
 
     /*
@@ -161,6 +185,8 @@ class TeacherController extends Controller
         }
 
     }
+
+
 
     /*
     |------------------------------------------------------------------------------
@@ -497,7 +523,7 @@ class TeacherController extends Controller
 
             $fileName = $request->File_Name->getClientOriginalName();
 
-            $path = Storage::putFileAs('uploads\assignments', $uploadedFile, $fileName);
+            $path = Storage::putFileAs('uploads\assignments\teacher-uploads', $uploadedFile, $fileName);
 
             $assignment = new AssignmentsTeacherUpload($request->all());
 
@@ -526,7 +552,7 @@ class TeacherController extends Controller
 
         if($assignment->save())
         {
-            $path = storage_path('app\public\uploads\assignments');
+            $path = storage_path('app\public\uploads\assignments\teacher-uploads');
 
             if(File::exists($path.'\\'.$assignment->ATU_File_Name))
                File::delete($path.'\\'.$assignment->ATU_File_Name);
@@ -535,5 +561,193 @@ class TeacherController extends Controller
         }
         else
             return back()->with('message', 'Could not delete assignment. Try again!');
+    }
+
+    /*
+    |------------------------------------------------------------------------------
+    | Methods for Setting Exams
+    |------------------------------------------------------------------------------
+    */
+    public function uploadExamDetails()
+    {
+        $batches = $this->getAssociatedBatches();
+        return view('teachers.set-exams.upload_exam_details')->with('batches',$batches);
+    }
+
+    public function saveExamDetails(Request $request)
+    {
+        $teacher = $this->getCurrentTeacher();
+
+        $examDetails = ExamUploadDetails::firstOrCreate([
+                            'EU_User_Id' => $teacher->id,
+                            'EU_Batch_Id' => $request->EU_Batch_Id,
+                            'EU_Name' => $request->EU_Name,
+                            'EU_Duration' => $request->EU_Duration,
+                            'EU_No_of_Q' => $request->EU_No_of_Q,
+                            'EU_Instr' => $request->EU_Instr,
+                            'EU_Upload_Date' => Date('Y-m-d'),
+                            'Role_Type' => 'T'
+                        ]);
+
+        if($examDetails->save())
+            return view('teachers.set-exams.upload_exam_questions')->with(['examDetails'=>$examDetails, 'question_no'=>1]);
+        else
+            return back()->with('message','Could not upload exam details. Try again!');
+    }
+
+    public function saveExamQuestions(Request $request)
+    {
+        $examDetails = ExamUploadDetails::findOrFail($request->EQ_EU_Id);
+
+        $question = ExamQuestionDetails::firstOrCreate([
+                        'EQ_EU_Id' => $request->EQ_EU_Id,
+                        'EQ_No_of_Q' => $request->EQ_No_of_Q,
+                        'EQ_Q_Number' => $request->EQ_Q_Number,
+                        'EQ_Q_Type' => $request->EQ_Q_Type,
+                        'EQ_Q' => $request->EQ_Q,
+                        'EQ_Op1' => $request->EQ_Op1,
+                        'EQ_Op2' => $request->EQ_Op2,
+                        'EQ_Op3' => $request->EQ_Op3,
+                        'EQ_Op4' => $request->EQ_Op4,
+                        'EQ_Ans' => $request->EQ_Ans,
+                        'Marks' => $request->Marks
+                    ]);
+
+        if($question->save())
+        {
+            if($question->EQ_Q_Number == $question->EQ_No_of_Q)
+                return redirect()->action('TeacherController@viewUploadedExam',$examDetails->id);
+            else
+                return view('teachers.set-exams.upload_exam_questions')->with(['examDetails'=>$examDetails, 'question_no'=>$question->EQ_Q_Number+1]);
+        }
+        else
+            return back()->with('message','Could not upload question. Try again!');
+
+    }
+
+    public function viewUploadedExam($exam_id)
+    {
+        try
+        {
+            $examDetails = ExamUploadDetails::findOrFail($exam_id);
+            $examQuestions = ExamQuestionDetails::where([['EQ_EU_Id','=',$examDetails->id],['Ent_Type','<>','D']])->get();
+
+            return view('teachers.set-exams.view_uploaded_exam')->with(['examDetails'=>$examDetails,'examQuestions'=>$examQuestions,'question_no'=>1]);
+
+        }catch(ModelNotFoundException $e)
+        {
+            return redirect('teacher/set-exam')->with('message','Could not upload exam. Try again!');
+        }
+    }
+
+    /*
+    |------------------------------------------------------------------------------
+    | Methods for Checking Students' Answer
+    |------------------------------------------------------------------------------
+    */
+    public function selectBatchForCheckingAnswers()
+    {
+        $batches = $this->getAssociatedBatches();
+        return view('teachers.check-students-answers.ca_select_batch')->with('batches',$batches);
+    }
+
+    public function selectExamForCheckingAnswers()
+    {
+        if (Input::has('Batch_Id'))
+        {
+            $batch_id = Input::get('Batch_Id');
+
+            $teacher = $this->getCurrentTeacher();
+
+            $exams = ExamUploadDetails::where([['EU_Batch_Id','=',$batch_id],['EU_User_Id','=',$teacher->id],['Ent_Type','<>','D']])->get();
+
+            return view('teachers.check-students-answers.ca_select_exam')->with(['exams'=>$exams]);
+
+        }
+    }
+
+    public function selectStudentForCheckingAnswers($id)
+    {
+        $students =  $this->findStudentsWithUncheckedAnswers($id);
+
+        return view('teachers.check-students-answers.ca_select_student')->with(['students'=>$students, 'exam_id'=> $id]);
+    }
+
+    public function findStudentsWithUncheckedAnswers($id)
+    {
+        try {
+            $student_ids = DB::table('exam_response_details')->where([['ER_EU_Id','=',$id],['ER_Marks_Obt','=',null],['Ent_Type','=','I']])->pluck('ER_User_Id');
+
+            $students = [];
+
+            foreach ($student_ids as $index => $id)
+            {
+                $students[$id] = TeacherStudentDetail::findOrFail($id);
+            }
+
+        }catch( ModelNotFoundException $e) {
+            return back()->with('message', 'No Such Student Exists!');
+        }
+        return $students;
+    }
+
+    public function checkAnswers($exam_id,$student_id)
+    {
+        $totalSubmittedAnswers = DB::table('exam_response_details')->where([['ER_EU_Id','=',$exam_id],['ER_User_Id','=',$student_id],['ER_Marks_Obt','=',null]])->count();
+
+        $firstAnswer = DB::table('exam_response_details')->where([['ER_EU_Id','=',$exam_id],['ER_User_Id','=',$student_id],['ER_Marks_Obt','=',null]])->first();
+
+        $firstQuestion = DB::table('exam_question_details')->where('id','=',$firstAnswer->ER_EQ_Id)->first();
+
+        return view('teachers.check-students-answers.ca_check_answers')->with(['question'=>$firstQuestion,'answer'=>$firstAnswer,'totalSubmittedAnswers'=>$totalSubmittedAnswers,'question_no'=>1, 'totalMarks'=>0,'obtainedMarks'=>0]);
+    }
+
+    public function saveObtainedMarks($exam_id,$student_id,Request $request)
+    {
+        $question_no = $request->question_no;
+        $answer = ExamResponseDetails::findOrFail($request->answer_id);
+        $answer->ER_Marks_Obt = $request->ER_Marks_Obt;
+        $answer->Ent_Type = 'E';
+
+        $totalMarks = $request->totalMarks + $request->Marks;
+        $obtainedMarks = $request->obtainedMarks + $request->ER_Marks_Obt;
+
+        if($answer->save())
+        {
+            if($request->totalSubmittedAnswers == $question_no)
+            {
+                $examDetails = ExamUploadDetails::findOrFail($exam_id);
+                $student = TeacherStudentDetail::findOrFail($student_id);
+                return view('teachers.check-students-answers.ca_upload_marks')->with(['student'=>$student, 'examDetails'=> $examDetails,'totalMarks' => $totalMarks, 'obtainedMarks' => $obtainedMarks]);
+            }
+            else
+            {
+                $nextAnswer = DB::table('exam_response_details')->where([['ER_EU_Id','=',$exam_id],['ER_User_Id','=',$student_id],['ER_Marks_Obt','=',null],['Ent_Type','I']])->first();
+
+                $question = DB::table('exam_question_details')->where('id','=',$nextAnswer->ER_EQ_Id)->first();
+
+                return view('teachers.check-students-answers.ca_check_answers')->with(['question'=>$question,'answer'=>$nextAnswer,'totalSubmittedAnswers'=>$request->totalSubmittedAnswers,'question_no'=>$question_no+1,'totalMarks'=>$totalMarks,'obtainedMarks'=>$obtainedMarks]);
+            }
+        }
+        else
+            return back()->with('message','Could not upload question. Try again!');
+
+    }
+
+    public function uploadStudentPerformance($exam_id,$student_id,Request $request)
+    {
+        $examDetails = ExamUploadDetails::findOrFail($exam_id);
+        $batch = BatchDetail::findOrFail($examDetails->EU_Batch_Id);
+
+        $studentPerformanceDetails = PerformanceDetails::firstOrCreate([
+                                        'Per_User_Id'=>$student_id,
+                                        'Per_Batch_Id'=>$batch->id,
+                                        'Per_Exam_Id'=>$exam_id,
+                                        'Per_Subject'=>$batch->Batch_Subject,
+                                        'Per_Marks'=>$request->Per_Marks,
+                                        'Per_Tot_Marks'=>$request->Per_Tot_Marks,
+                                        'Role_Type'=>'S'
+                                     ]);
+        return redirect('teacher/check-student-answers')->with('message','Marks Uploaded Successfully!');
     }
 }

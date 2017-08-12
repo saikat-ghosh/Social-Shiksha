@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\CoachingDetails;
+use App\ExamQuestionDetails;
+use App\ExamResponseDetails;
+use App\ExamUploadDetails;
+use App\PerformanceDetails;
 use App\TeacherStudentDetail;
 use App\User;
 use Illuminate\Http\Request;
@@ -41,9 +45,13 @@ class HomeController extends Controller
     public function truncateDB()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        User::truncate();
-        TeacherStudentDetail::truncate();
-        CoachingDetails::truncate();
+        //User::truncate();
+        //TeacherStudentDetail::truncate();
+        //CoachingDetails::truncate();
+        //ExamUploadDetails::truncate();
+        //ExamQuestionDetails::truncate();
+        ExamResponseDetails::truncate();
+        PerformanceDetails::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         return redirect('/');

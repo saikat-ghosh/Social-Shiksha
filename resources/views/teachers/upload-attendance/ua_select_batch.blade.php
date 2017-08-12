@@ -6,7 +6,7 @@
                <div class="col-md-8 col-md-offset-2">
                    <div class="panel panel-default">
                        <div class="panel panel-heading">
-                           <b>Search Student For Attendance Upload</b>
+                           <b>Upload Attendance</b>
                        </div>
 
                        <div class="panel panel-body">

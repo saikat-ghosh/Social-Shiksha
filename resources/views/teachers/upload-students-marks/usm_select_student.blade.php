@@ -5,7 +5,7 @@
             <div id="select-student" class="row padding">
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Select Student for Marks Upload</div>
+                        <div class="panel-heading">Students' Marks Upload</div>
                         <div class="panel-body">
                             <div>
                                 @if(empty($students))

@@ -96,6 +96,26 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 
     Route::delete('delete-assignment/{id}','TeacherController@deleteUploadedAssignment');
 
+    Route::get('set-exam','TeacherController@uploadExamDetails');
+
+    Route::post('set-exam','TeacherController@saveExamDetails');
+
+    Route::get('upload-exam/{id}','TeacherController@viewUploadedExam');
+
+    Route::post('set-exam/questions','TeacherController@saveExamQuestions');
+
+    Route::get('check-student-answers','TeacherController@selectBatchForCheckingAnswers');
+
+    Route::post('check-student-answers/exams','TeacherController@selectExamForCheckingAnswers');
+
+    Route::post('check-student-answers/exam/{id}','TeacherController@selectStudentForCheckingAnswers');
+
+    Route::get('check-student-answers/exam/{exam_id}/student/{stu_id}','TeacherController@checkAnswers');
+
+    Route::post('check-student-answers/exam/{exam_id}/student/{stu_id}','TeacherController@saveObtainedMarks');
+
+    Route::post('check-student-answers/exam/{exam_id}/student/{stu_id}/upload-marks','TeacherController@uploadStudentPerformance');
+
     Route::get('discussion-forum/{id}','DiscussionForumDetailsController@index')->name('post-detail');
 
     Route::post('discussion-forum/{id}','DiscussionForumDetailsController@store');
@@ -131,11 +151,39 @@ Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function()
 
     Route::post('/edit-profile', 'StudentController@update_profile');
 
-    Route::get('/batches','StudentController@show_batches');
+    Route::get('/batches','StudentController@showBatches');
 
-    Route::post('/batches','StudentController@assign_batch');
+    Route::post('/batches','StudentController@assignBatch');
 
-    Route::delete('/batches/{id}','StudentController@remove_batch');
+    Route::delete('/batches/{id}','StudentController@removeBatch');
+
+    Route::get('give-exam','StudentController@selectBatchForGivingExam');
+
+    Route::post('give-exam','StudentController@selectExam');
+
+    Route::get('give-exam/{id}','StudentController@confirmExam');
+
+    Route::get('exam/{id}/question/{question_no}','StudentController@startExam');
+
+    Route::post('exam/{id}/question/{question_no}','StudentController@saveStudentResponse');
+
+    Route::get('download-study-material','StudentController@selectBatchForDownloadingStudyMaterials');
+
+    Route::post('download-study-material','StudentController@downloadStudyMaterials');
+
+    Route::get('download-test-or-practice-paper','StudentController@selectBatchForDownloadingMockTestOrPracticePapers');
+
+    Route::post('download-test-or-practice-paper','StudentController@downloadMockTestOrPracticePapers');
+
+    Route::get('download-assignment','StudentController@selectBatchForDownloadingAssignments');
+
+    Route::post('download-assignment','StudentController@downloadAssignments');
+
+    Route::get('upload-assignment','StudentController@uploadAssignment');
+
+    Route::post('upload-assignment','StudentController@saveUploadedAssignment');
+
+    Route::delete('delete-assignment/{id}','StudentController@deleteUploadedAssignment');
 
 });
 

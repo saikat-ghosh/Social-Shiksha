@@ -7,7 +7,7 @@
                     <div class="col-md-8 col-md-offset-2">
                         <div class="panel panel-default">
                             <div class="panel panel-heading">
-                                <b>Student Performance Details</b>
+                                <b>Students' Marks Upload</b>
                             </div>
 
                             <div class="panel panel-body">

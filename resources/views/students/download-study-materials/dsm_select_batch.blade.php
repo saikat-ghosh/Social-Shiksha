@@ -1,12 +1,12 @@
-@extends('layouts.teacher_layouts.upload_students_marks_layout')
+@extends('layouts.student_layouts.download_study_materials_layout')
 
        @section('menu-content')
 
-           <div id="search-student" class="row padding">
+           <div id="select-batch" class="row padding">
                <div class="col-md-8 col-md-offset-2">
                    <div class="panel panel-default">
                        <div class="panel panel-heading">
-                           <b>Students' Marks Upload</b>
+                           <b>Download Study Materials</b>
                        </div>
 
                        <div class="panel panel-body">
@@ -14,7 +14,7 @@
                            @if(empty($batches))
                                <h4>You are currently not associated with any batch!</h4>
                            @else
-                            <form class="form-horizontal padding" action="{{ action('TeacherController@selectStudentForMarksUpload') }}" method="post">
+                            <form class="form-horizontal padding" action="{{action('StudentController@downloadStudyMaterials')}}" method="post">
                                 {{ csrf_field() }}
                                <!-- Search by Batches -->
                                 <div class="form-group">
@@ -30,7 +30,7 @@
                                 </div>
 
                                <div class="form-group">
-                                   <button type="submit" class="btn btn-primary pull-right">Search</button>
+                                   <button type="submit" class="btn btn-primary pull-right">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></button>
                                </div>
                             </form>
                             @endif

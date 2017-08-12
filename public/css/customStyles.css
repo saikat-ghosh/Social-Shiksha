@@ -166,6 +166,10 @@
 .padding {
     padding: 3%;
 }
+.padding-side {
+    padding-left: 2%;
+    padding-right: 2%;
+}
 .padding-bottom {
     padding-bottom: 1%;
 }
