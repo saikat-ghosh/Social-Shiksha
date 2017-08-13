@@ -48,19 +48,19 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
 
 Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function() {
 
-    Route::get('/dashboard', 'TeacherController@dashboard');
+    Route::get('dashboard', 'TeacherController@dashboard');
 
-    Route::get('/view-profile', 'TeacherController@viewProfile');
+    Route::get('view-profile', 'TeacherController@viewProfile');
 
-    Route::get('/edit-profile', 'TeacherController@editProfile');
+    Route::get('edit-profile', 'TeacherController@editProfile');
 
-    Route::post('/edit-profile', 'TeacherController@updateProfile');
+    Route::post('edit-profile', 'TeacherController@updateProfile');
 
-    Route::get('/batches','TeacherController@showBatches');
+    Route::get('batches','TeacherController@showBatches');
 
-    Route::post('/batches','TeacherController@assignBatch');
+    Route::post('batches','TeacherController@assignBatch');
 
-    Route::delete('/batches/{id}','TeacherController@removeBatch');
+    Route::delete('batches/{id}','TeacherController@removeBatch');
 
     Route::get('upload-student-marks','TeacherController@selectBatchForMarksUpload');
 
@@ -77,6 +77,18 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
     Route::post('upload-attendance/batch/{batch_id}/student/{id}','TeacherController@uploadAttendance');
 
     Route::post('upload-attendance/upload','TeacherController@saveUploadedAttendance');
+
+    Route::get('student-performance-report','TeacherController@selectBatchForStudentPerformanceReport');
+
+    Route::post('student-performance-report/students','TeacherController@selectStudentForStudentPerformanceReport');
+
+    Route::get('student-performance-report/batch/{batch_id}/student/{student_id}','TeacherController@displayStudentPerformanceReport');
+
+    Route::get('student-attendance-report','TeacherController@selectBatchForStudentAttendanceReport');
+
+    Route::post('student-attendance-report/students','TeacherController@selectStudentForStudentAttendanceReport');
+
+    Route::get('student-attendance-report/batch/{batch_id}/student/{student_id}','TeacherController@displayStudentAttendanceReport');
 
     Route::get('upload-study-material','TeacherController@uploadStudyMaterial');
 
@@ -95,6 +107,12 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
     Route::post('upload-assignment','TeacherController@saveUploadedAssignment');
 
     Route::delete('delete-assignment/{id}','TeacherController@deleteUploadedAssignment');
+
+    Route::get('download-assignment','TeacherController@selectBatchForDownloadingStudentAssignments');
+
+    Route::post('download-assignment/students','TeacherController@selectStudentForDownloadingAssignments');
+
+    Route::get('download-assignment/batch/{batch_id}/student/{student_id}','TeacherController@downloadStudentAssignments');
 
     Route::get('set-exam','TeacherController@uploadExamDetails');
 
@@ -151,11 +169,11 @@ Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function()
 
     Route::post('/edit-profile', 'StudentController@update_profile');
 
-    Route::get('/batches','StudentController@showBatches');
+    Route::get('batch-details','StudentController@showBatches');
 
-    Route::post('/batches','StudentController@assignBatch');
+    Route::post('batch-details','StudentController@assignBatch');
 
-    Route::delete('/batches/{id}','StudentController@removeBatch');
+    Route::delete('batch-details/{id}','StudentController@removeBatch');
 
     Route::get('give-exam','StudentController@selectBatchForGivingExam');
 

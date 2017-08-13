@@ -1,12 +1,12 @@
-@extends('layouts.teacher_layouts.upload_students_attendance_layout')
+@extends('layouts.teacher_layouts.download_student_assignment_layout')
 
     @section('menu-content')
         <!-- Select students for attendance upload -->
             <div id="select-student" class="row padding">
                 <div class="col-sm-11 col-sm-offset-1">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Upload Attendance
-                                <a href="{{ action('TeacherController@selectBatchForAttendanceUpload') }}" class="pull-right xs-small-font"><span class="xs-small-font glyphicon glyphicon-chevron-left"></span>&thinsp;Back</a>
+                        <div class="panel-heading">Download Students' Assignment
+                                <a href="{{ action('TeacherController@selectBatchForDownloadingStudentAssignments') }}" class="pull-right xs-small-font"><span class="xs-small-font glyphicon glyphicon-chevron-left"></span>&thinsp;Back</a>
                         </div>
                         <div class="panel-body">
                             <div>
@@ -18,12 +18,9 @@
                                             <li class="list-group-item">
                                                 <strong>{{ $student->T_Stu_Name }}</strong>&nbsp;&nbsp;
                                                 {{ $student->T_Stu_No }}
-                                                <span class="badge">
-                                                    <form action="{{ action('TeacherController@uploadAttendance',[$batch_id,$student->id]) }}" method="post">
-                                                        {{ csrf_field() }}
-                                                        <button type="submit" class="btn-xs btn-link white-text">Upload</button>
-                                                    </form>
-                                                </span>
+                                                <a class="btn btn-xs btn-info pull-right" href="{{ action('TeacherController@downloadStudentAssignments',[$batch_id,$student->id]) }}">
+                                                    Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span>
+                                                </a>
                                             </li>
                                         @endforeach
                                     </ul>

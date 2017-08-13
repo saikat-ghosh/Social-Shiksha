@@ -101,50 +101,56 @@ class StudentController extends Controller
             return back()->with('message','Unable to update profile. Try again!');
     }
 
+    /*
+    |------------------------------------------------------------------------------
+    | Methods for student to view/remove associated batches or join new batch
+    |------------------------------------------------------------------------------
+    */
+
     public function showBatches()
     {
-        $teacher = $this->getCurrentTeacher();
+        $student = $this->getCurrentStudent();
+        $associated_batch_ids = DB::table('t_s_batch_relations')->where([['TSB_T_Stu_Id', $student->id], ['Ent_Type', '<>', 'D']])->pluck('TSB_Batch_Id');
 
-        $allBatches = BatchDetail::all();
+        $associatedBatches = $this->getAssociatedBatches();
+        $remainingBatches = BatchDetail::whereNotIn('id', $associated_batch_ids)->where('Ent_Type', '<>', 'D')->get();
 
-        $teacherBatches = [];
-
-        $teacherBatchesId = TSBatchRelation::where([['TSB_T_Stu_Id',$teacher->id],['Ent_type','<>','D']])->select('id','TSB_Batch_Id')->get();
-
-        foreach($teacherBatchesId as $id=>$item)
-        {
-            $batch = BatchDetail::where('id',$item->TSB_Batch_Id)->select('id','Batch_Code','Batch_Subject')->first();
-            $teacherBatches[$item->id] = $batch;
-        }
-        //dd($teacherBatches);
-        return view('teachers.batch_details')->with(['allBatches'=>$allBatches,'teacherBatches'=>$teacherBatches]);
+        return view('students.student_batch_details')->with(['remainingBatches' => $remainingBatches, 'associatedBatches' => $associatedBatches]);
     }
 
     public function assignBatch(Request $request)
     {
-        $teacher = $this->getCurrentTeacher();
+        $student = $this->getCurrentStudent();
 
-        $assignedBatch = TSBatchRelation::create([
-            'TSB_T_Stu_Id'=>$teacher->id,
-            'TSB_Batch_Id'=>$request->batch_id,
-            'Role_Type'=>'T'
+        $assignedBatch = TSBatchRelation::firstOrCreate([
+            'TSB_T_Stu_Id' => $student->id,
+            'TSB_Batch_Id' => $request->Batch_Id,
+            'Role_Type' => 'S'
         ]);
-        return response()->json(['assignedBatch'=>$assignedBatch]);
+
+        $assignedBatch->Ent_Type = 'I';
+
+        if($assignedBatch->save())
+            return redirect('student/batch-details')->with(['message' => 'Joined batch successfully!']);
+        else
+            return redirect('student/batch-details')->with(['message' => 'Could not join batch! Try again.']);
+
     }
 
-    public function removeBatch($id)
+    public function removeBatch($batch_id)
     {
-        try
-        {
-            $removedBatch = TSBatchRelation::findOrFail($id);
+        $student = $this->getCurrentStudent();
+        try {
+            $removedBatch = TSBatchRelation::where([['TSB_T_Stu_Id',$student->id],['TSB_Batch_Id',$batch_id]])->first();
             $removedBatch->Ent_Type = 'D';
-            if($removedBatch->save())
-                return redirect('teacher/batches')->with(['message'=>'Record deleted successfully!']);
-            else
-                return redirect('teacher/batches')->with(['message'=> 'Could Not Delete Record! Try Again.']);
 
-        } catch( ModelNotFoundException $e) {
-            return redirect('teacher/batches')->with(['message'=> 'No Such Batch Exists!']);
+            if ($removedBatch->save())
+                return redirect('student/batch-details')->with(['message' => 'Batch removed successfully!']);
+            else
+                return redirect('student/batch-details')->with(['message' => 'Could not remove batch! Try again.']);
+
+        } catch (ModelNotFoundException $e) {
+            return redirect('student/batch-details')->with(['message' => 'No Such Batch Exists!']);
         }
 
     }

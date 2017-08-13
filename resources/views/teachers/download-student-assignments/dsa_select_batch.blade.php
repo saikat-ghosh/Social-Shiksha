@@ -1,18 +1,18 @@
-@extends('layouts.teacher_layouts.upload_students_attendance_layout')
+@extends('layouts.teacher_layouts.download_student_assignment_layout')
 
        @section('menu-content')
 
-           <div id="search-student" class="row padding">
+           <div id="select-batch" class="row padding">
                <div class="col-md-11 col-md-offset-1">
                    <div class="panel panel-default">
-                       <div class="panel panel-heading">Upload Attendance</div>
+                       <div class="panel panel-heading">Download Students' Assignments</div>
 
                        <div class="panel panel-body">
 
                            @if(empty($batches))
                                <h4>You are currently not associated with any batch!</h4>
                            @else
-                            <form class="form-horizontal padding" action="{{ action('TeacherController@selectStudentForAttendanceUpload') }}" method="post">
+                            <form class="form-horizontal padding" action="{{action('TeacherController@selectStudentForDownloadingAssignments')}}" method="post">
                                 {{ csrf_field() }}
                                <!-- Search by Batches -->
                                 <div class="form-group padding-side">

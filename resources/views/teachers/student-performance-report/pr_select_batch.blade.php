@@ -1,21 +1,23 @@
-@extends('layouts.teacher_layouts.upload_students_attendance_layout')
+@extends('layouts.teacher_layouts.student_performance_report_layout')
 
        @section('menu-content')
 
-           <div id="search-student" class="row padding">
+           <div id="select-batch" class="row padding">
                <div class="col-md-11 col-md-offset-1">
                    <div class="panel panel-default">
-                       <div class="panel panel-heading">Upload Attendance</div>
+                       <div class="panel panel-heading">
+                           <b>Student Performance Report</b>
+                       </div>
 
                        <div class="panel panel-body">
 
                            @if(empty($batches))
                                <h4>You are currently not associated with any batch!</h4>
                            @else
-                            <form class="form-horizontal padding" action="{{ action('TeacherController@selectStudentForAttendanceUpload') }}" method="post">
+                            <form class="form-horizontal padding" action="{{ action('TeacherController@selectStudentForStudentPerformanceReport') }}" method="post">
                                 {{ csrf_field() }}
                                <!-- Search by Batches -->
-                                <div class="form-group padding-side">
+                                <div class="form-group">
                                     <label for="Batch_id" class="control-label">Select Batch First</label>
                                     <div>
                                         <select name="Batch_Id" id="Batch_id" class="form-control input-sm" required>
@@ -27,7 +29,7 @@
                                     </div>
                                 </div>
 
-                               <div class="form-group padding-side">
+                               <div class="form-group">
                                    <button type="submit" class="btn btn-primary pull-right">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></button>
                                </div>
                             </form>
