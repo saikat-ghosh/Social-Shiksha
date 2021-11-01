@@ -68,24 +68,21 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Authentication Links -->
-                            @if (Auth::guest())
-                                <li><a href="{{ url('/login') }}">Login</a></li>
-                                <li><a href="{{ url('/register') }}">Register</a></li>
-                            @else
+                            @if(session('Admin_User_Id') == 'korak')
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-user"></span>{{ Auth::user()->User_Id }} <span class="caret"></span>
+                                        <span class="glyphicon glyphicon-user"></span>{{ session('Admin_User_Id') }} <span class="caret"></span>
                                     </a>
 
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                            <a href="{{ url('/logout') }}"
+                                            <a href="{{ url('admin/logout') }}"
                                                onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                                                 <span class="glyphicon glyphicon-off"></span>Logout
                                             </a>
                                             <!-- Submit this form while logging out -->
-                                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                            <form id="logout-form" action="{{ url('admin/logout') }}" method="POST" style="display: none;">
                                                 {{ csrf_field() }}
                                             </form>
                                         </li>
@@ -99,7 +96,35 @@
             <!-- End of Navigation Bar -->
 
             <!-- Main Content goes here -->
-            @yield('content')
+            <div class="container-fluid no-margin-padding">
+
+                <div class="row no-padding">
+
+                    <!-- Left Sidebar goes here -->
+                    <div class="col-sm-3">
+                        @yield('sidebar-menu-left')
+                    </div>
+                    <!-- Sidebar Menu Content goes here -->
+                    <div class="col-sm-7 small-font">
+
+                        <!-- Social-Shiksha Logo -->
+                        <div class="row">
+                            <center>
+                                <img src="{{asset('images\logo.png')}}">
+                            </center>
+                        </div>
+
+                        <!-- Main Content -->
+                        @yield('menu-content')
+                    </div>
+                    <!-- Right Sidebar goes here -->
+                    <div class="col-sm-2 text-center">
+                        @yield('sidebar-right')
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
     <!-- End of Main Page -->

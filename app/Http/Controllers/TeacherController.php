@@ -171,7 +171,7 @@ class TeacherController extends Controller
     {
         $teacher = $this->getCurrentTeacher();
         try {
-            $removedBatch = TSBatchRelation::where([['TSB_T_Stu_Id',$teacher->id],['TSB_Batch_Id',$batch_id]])->first();;
+            $removedBatch = TSBatchRelation::where([['TSB_T_Stu_Id',$teacher->id],['TSB_Batch_Id',$batch_id]])->first();
             $removedBatch->Ent_Type = 'D';
 
             if ($removedBatch->save())

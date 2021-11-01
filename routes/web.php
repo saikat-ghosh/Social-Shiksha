@@ -23,6 +23,23 @@ Route::get('/', function () {
     return view('index');
 });
 
+
+Route::get('admin', 'AdminController@showLoginForm');
+Route::post('admin','AdminController@login');
+
+Route::group(['prefix'=>'admin','middleware'=>[]],function() {
+
+    Route::get('dashboard', 'AdminController@dashboard');
+
+    Route::get('registration-fees','AdminController@selectUserType');
+
+    Route::post('registration-fees/unpaid-users','AdminController@showUnpaidUsers');
+
+    Route::get('registration-fees/{role_type}/{id}/pay','AdminController@payRegistrationFees');
+
+    Route::post('logout','AdminController@logout');
+});
+
 Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],function() {
 
     Route::get('/dashboard', 'InstitutionController@dashboard');
@@ -33,7 +50,7 @@ Route::group(['prefix'=>'institution','middleware'=>['auth','isInstitution']],fu
 
     Route::post('/edit-profile', 'InstitutionController@update_profile');
 
-    Route::get('/teacher-details', 'InstitutionController@show_teacher_details');
+    Route::get('/teacher-details', 'InstitutionController@show_teacher_details')->middleware('RegistrationFeesPaid');
 
     Route::get('/student-details', 'InstitutionController@show_student_details');
 
@@ -56,7 +73,7 @@ Route::group(['prefix'=>'teacher','middleware'=>['auth','isTeacher']],function()
 
     Route::post('edit-profile', 'TeacherController@updateProfile');
 
-    Route::get('batches','TeacherController@showBatches');
+    Route::get('batches','TeacherController@showBatches')->middleware('RegistrationFeesPaid');
 
     Route::post('batches','TeacherController@assignBatch');
 
@@ -169,7 +186,7 @@ Route::group(['prefix'=>'student','middleware'=>['auth','isStudent']],function()
 
     Route::post('/edit-profile', 'StudentController@update_profile');
 
-    Route::get('batch-details','StudentController@showBatches');
+    Route::get('batch-details','StudentController@showBatches')->middleware('RegistrationFeesPaid');
 
     Route::post('batch-details','StudentController@assignBatch');
 

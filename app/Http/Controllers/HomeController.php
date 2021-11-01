@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AdminDetail;
 use App\CoachingDetails;
 use App\ExamQuestionDetails;
 use App\ExamResponseDetails;
@@ -50,8 +51,9 @@ class HomeController extends Controller
         //CoachingDetails::truncate();
         //ExamUploadDetails::truncate();
         //ExamQuestionDetails::truncate();
-        ExamResponseDetails::truncate();
-        PerformanceDetails::truncate();
+        //ExamResponseDetails::truncate();
+        //PerformanceDetails::truncate();
+        AdminDetail::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         return redirect('/');

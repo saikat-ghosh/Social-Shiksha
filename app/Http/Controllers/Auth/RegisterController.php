@@ -95,7 +95,7 @@ class RegisterController extends Controller
                         'Role_Type'=> 'T',
                         'Ent_Type'=> 'I'
                     ]);
-        else
+        elseif($data['role']== 'S')
             $user = TeacherStudentDetail::create([
                         'T_Stu_File_Name'=>null,
                         'T_Stu_Name'=> $data['name'],
